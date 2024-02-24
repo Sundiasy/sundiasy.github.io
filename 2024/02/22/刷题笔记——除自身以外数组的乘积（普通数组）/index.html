@@ -13,17 +13,22 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://example.com/archives/2024/"/>
+    <link rel="canonical" href="http://example.com/2024/02/22/刷题笔记——除自身以外数组的乘积（普通数组）/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/2024/index.html">
+        <meta name="description" content="除自身以外数组的乘积 这道题题目要求不能使用乘法，并且要求时间复杂度为o(n)，于是这道题就变成了对前缀和的考察。 题目给你一个整数数组 nums，返回 数组 answer ，其中 answer[i] 等于 nums 中除 nums[i] 之外其余各元素的乘积 。 题目数据 保证 数组 nums之中任意元素的全部前缀元素和后缀的乘积都在 32 位 整数范围内。 请 不要使用除法，且在 O(*n*)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="刷题笔记——除自身以外数组的乘积（普通数组）">
+<meta property="og:url" content="http://example.com/2024/02/22/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E9%99%A4%E8%87%AA%E8%BA%AB%E4%BB%A5%E5%A4%96%E6%95%B0%E7%BB%84%E7%9A%84%E4%B9%98%E7%A7%AF%EF%BC%88%E6%99%AE%E9%80%9A%E6%95%B0%E7%BB%84%EF%BC%89/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="除自身以外数组的乘积 这道题题目要求不能使用乘法，并且要求时间复杂度为o(n)，于是这道题就变成了对前缀和的考察。 题目给你一个整数数组 nums，返回 数组 answer ，其中 answer[i] 等于 nums 中除 nums[i] 之外其余各元素的乘积 。 题目数据 保证 数组 nums之中任意元素的全部前缀元素和后缀的乘积都在 32 位 整数范围内。 请 不要使用除法，且在 O(*n*)">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-22T08:25:42.000Z">
+<meta property="article:modified_time" content="2024-02-24T09:49:07.463Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="practice">
 <meta name="twitter:card" content="summary">
     
     
@@ -36,7 +41,7 @@
     
     <title>
         
-            Archive: 2024 -
+            刷题笔记——除自身以外数组的乘积（普通数组） -
         
         孙睿睿的博客站
     </title>
@@ -376,115 +381,243 @@
             <div class="main-content">
 
                 
-                    <div class="archive-container shadow-none hover:shadow-none sm:shadow-redefine sm:hover:shadow-redefine-hover">
-    
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
 
-<div class="archive-list-container">
-    
-        <section class="archive-item mb-spacing-unit last:mb-0">
-            <div class="archive-item-header flex flex-row items-center mb-2">
-                <span class="archive-year font-semibold text-3xl mr-2">2024</span>
-                <span class="archive-year-post-count text-xs md:text-sm font-bold rounded-small bg-third-background-color py-[2px] px-[10px] border border-border-color">10</span>
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">刷题笔记——除自身以外数组的乘积（普通数组）</h1>
+                </div>
+            
             </div>
-            <ul class="article-list pl-0 md:pl-8 text-lg leading-[1.5]">
-              
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/redefine-avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">孙睿睿</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-02-22 16:25:42</span>
+        <span class="mobile">2024-02-22 16:25:42</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-02-24 17:49:07</span>
+            <span class="mobile">2024-02-24 17:49:07</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
                 
-                    
-                    <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='02-22'>
+                    <li>
+                        <a href="/tags/practice/">practice</a>&nbsp;
+                    </li>
                 
-                    
-                        <a href="/2024/02/22/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%BC%BA%E5%A4%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%AD%A3%E6%95%B0%EF%BC%88%E6%99%AE%E9%80%9A%E6%95%B0%E7%BB%84%EF%BC%89/" class="block overflow-hidden w-fit">
-                            <span class="article-title mb-0.5 text-2xl">刷题笔记——缺失的第一个正数（普通数组）</span>
-                        </a>
-                    
-              
-                
-                    
-                        <a href="/2024/02/22/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E9%99%A4%E8%87%AA%E8%BA%AB%E4%BB%A5%E5%A4%96%E6%95%B0%E7%BB%84%E7%9A%84%E4%B9%98%E7%A7%AF%EF%BC%88%E6%99%AE%E9%80%9A%E6%95%B0%E7%BB%84%EF%BC%89/" class="block overflow-hidden w-fit">
-                            <span class="article-title mb-0.5 text-2xl">刷题笔记——除自身以外数组的乘积（普通数组）</span>
-                        </a>
-                    
-              
-                
-                    
-                    <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='02-20'>
-                
-                    
-                        <a href="/2024/02/20/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E8%BD%AE%E8%BD%AC%E6%95%B0%E7%BB%84%EF%BC%88%E6%99%AE%E9%80%9A%E6%95%B0%E7%BB%84%EF%BC%89/" class="block overflow-hidden w-fit">
-                            <span class="article-title mb-0.5 text-2xl">刷题笔记——轮转数组（普通数组）</span>
-                        </a>
-                    
-              
-                
-                    
-                        <a href="/2024/02/20/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%90%88%E5%B9%B6%E5%8C%BA%E9%97%B4%EF%BC%88%E6%99%AE%E9%80%9A%E6%95%B0%E7%BB%84%EF%BC%89/" class="block overflow-hidden w-fit">
-                            <span class="article-title mb-0.5 text-2xl">刷题笔记——合并区间（普通数组）</span>
-                        </a>
-                    
-              
-                
-                    
-                    <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='02-19'>
-                
-                    
-                        <a href="/2024/02/19/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E7%BB%84%E5%92%8C%EF%BC%88%E6%99%AE%E9%80%9A%E6%95%B0%E7%BB%84%EF%BC%89/" class="block overflow-hidden w-fit">
-                            <span class="article-title mb-0.5 text-2xl">刷题笔记——最大子数组和（普通数组）</span>
-                        </a>
-                    
-              
-                
-                    
-                    <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='02-18'>
-                
-                    
-                        <a href="/2024/02/18/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%9C%80%E5%B0%8F%E8%A6%86%E7%9B%96%E5%AD%90%E4%B8%B2%EF%BC%88%E5%AD%90%E4%B8%B2%EF%BC%89/" class="block overflow-hidden w-fit">
-                            <span class="article-title mb-0.5 text-2xl">刷题笔记——最小覆盖子串（子串）</span>
-                        </a>
-                    
-              
-                
-                    
-                    <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='02-17'>
-                
-                    
-                        <a href="/2024/02/17/rust%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%A4%8D%E5%90%88%E7%B1%BB%E5%9E%8B%EF%BC%88%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%EF%BC%89/" class="block overflow-hidden w-fit">
-                            <span class="article-title mb-0.5 text-2xl">rust语言学习笔记——复合类型（基础语法）</span>
-                        </a>
-                    
-              
-                
-                    
-                    <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='02-15'>
-                
-                    
-                        <a href="/2024/02/15/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%80%E5%A4%A7%E5%80%BC%EF%BC%88%E5%AD%90%E4%B8%B2%EF%BC%89/" class="block overflow-hidden w-fit">
-                            <span class="article-title mb-0.5 text-2xl">刷题笔记——滑动窗口最大值（子串）</span>
-                        </a>
-                    
-              
-                
-                    
-                    <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='02-11'>
-                
-                    
-                        <a href="/2024/02/11/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%AD%90%E4%B8%B2/" class="block overflow-hidden w-fit">
-                            <span class="article-title mb-0.5 text-2xl">刷题笔记——和为 K 的子数组(子串)</span>
-                        </a>
-                    
-              
-                
-                    
-                        <a href="/2024/02/11/hello-world/" class="block overflow-hidden w-fit">
-                            <span class="article-title mb-0.5 text-2xl">我的第一篇博客</span>
-                        </a>
-                    
-              
             </ul>
-        </section>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
     
 </div>
 
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1 id="除自身以外数组的乘积"><a href="#除自身以外数组的乘积" class="headerlink" title="除自身以外数组的乘积"></a><a class="link"   target="_blank" rel="noopener" href="https://leetcode.cn/problems/product-of-array-except-self/" >除自身以外数组的乘积 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h1><p>这道题题目要求不能使用乘法，并且要求时间复杂度为<code>o(n)</code>，于是这道题就变成了对前缀和的考察。</p>
+<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给你一个整数数组 <code>nums</code>，返回 <em>数组 <code>answer</code> ，其中 <code>answer[i]</code> 等于 <code>nums</code> 中除 <code>nums[i]</code> 之外其余各元素的乘积</em> 。</p>
+<p>题目数据 <strong>保证</strong> 数组 <code>nums</code>之中任意元素的全部前缀元素和后缀的乘积都在 <strong>32 位</strong> 整数范围内。</p>
+<p>请 <strong>不要使用除法，</strong>且在 <code>O(*n*)</code> 时间复杂度内完成此题。</p>
+<p><strong>示例1</strong></p>
+<blockquote>
+<p><strong>输入：</strong>nums &#x3D; [1,2,3,4]</p>
+<p><strong>输出：</strong>[24,12,8,6]</p>
+</blockquote>
+<p><strong>示例1</strong></p>
+<blockquote>
+<p><strong>输入：</strong>nums &#x3D; [-1,1,0,-3,3]</p>
+<p><strong>输出：</strong>[0,0,9,0,0]</p>
+</blockquote>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>此题使用前缀和的方法可以轻松解决。具体想法是分两次遍历。左边遍历时存储遍历元素左边所有元素的乘积，右边遍历时存储遍历元素右边所有元素的乘积。遍历完成后，将这两个数组每每元素相乘，最终放在答案容器中返回。</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">productExceptSelf</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt;<span class="built_in">l</span>(nums.<span class="built_in">size</span>());</span><br><span class="line">    l[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt;<span class="built_in">r</span>(nums.<span class="built_in">size</span>());</span><br><span class="line">    r[nums.<span class="built_in">size</span>()<span class="number">-1</span>] = <span class="number">1</span>;</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt;ans;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>;i&lt;nums.<span class="built_in">size</span>();i++)</span><br><span class="line">    &#123;</span><br><span class="line">        l[i] = l[i<span class="number">-1</span>]*nums[i<span class="number">-1</span>];</span><br><span class="line">    &#125;   </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = nums.<span class="built_in">size</span>()<span class="number">-2</span>;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">    &#123;</span><br><span class="line">        r[i] = r[i+<span class="number">1</span>]*nums[i+<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i =<span class="number">0</span>;i&lt; nums.<span class="built_in">size</span>();i++)</span><br><span class="line">    &#123;</span><br><span class="line">        ans.<span class="built_in">push_back</span>(l[i]*r[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在不使用乘法的基础上，实现这道题还是有一定的难度的。因此前缀和的方法适用于累加、累乘等等累积操作，故通过此题复习了前缀和的知识。</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> 刷题笔记——除自身以外数组的乘积（普通数组）</li>
+        <li><strong>Author:</strong> 孙睿睿</li>
+        <li><strong>Created at
+                :</strong> 2024-02-22 16:25:42</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-02-24 17:49:07
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://redefine.ohevan.com/2024/02/22/刷题笔记——除自身以外数组的乘积（普通数组）/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
 </div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/practice/">#practice</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/02/22/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%BC%BA%E5%A4%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%AD%A3%E6%95%B0%EF%BC%88%E6%99%AE%E9%80%9A%E6%95%B0%E7%BB%84%EF%BC%89/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">刷题笔记——缺失的第一个正数（普通数组）</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/02/20/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E8%BD%AE%E8%BD%AC%E6%95%B0%E7%BB%84%EF%BC%88%E6%99%AE%E9%80%9A%E6%95%B0%E7%BB%84%EF%BC%89/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">刷题笔记——轮转数组（普通数组）</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          recaptchaV3Key: "wasd",
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">刷题笔记——除自身以外数组的乘积（普通数组）</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%99%A4%E8%87%AA%E8%BA%AB%E4%BB%A5%E5%A4%96%E6%95%B0%E7%BB%84%E7%9A%84%E4%B9%98%E7%A7%AF"><span class="nav-text">除自身以外数组的乘积 </span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-text">题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
 
                 
 
@@ -566,6 +699,27 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">

@@ -13,20 +13,20 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://example.com/2024/02/11/刷题笔记——子串/"/>
+    <link rel="canonical" href="http://example.com/2024/02/15/刷题笔记——滑动窗口最大值（子串）/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="使用个人博客，记录我在leetcode刷题hot100全过程，本章节的内容是子串。 在这个题中，我本身是想用滑动窗口的方法写的。在经过了一段时间的挣扎后，发现此方法没有办法获取中间数字值的状态。于是参考了题解使用前缀和加哈希的思路，完成了题目。 题目给你一个整数数组 nums 和一个整数 k ，请你统计并返回 该数组中和为 k 的子数组的个数 。 子数组是数组中元素的连续非空序列。  示例 1：">
+        <meta name="description" content="题目给你一个整数数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。 返回 滑动窗口中的最大值 。  示例1：  输入：nums &#x3D; [1,3,-1,-3,5,3,6,7], k &#x3D; 3 输出：[3,3,5,5,6,7] 1234567---------------">
 <meta property="og:type" content="article">
-<meta property="og:title" content="刷题笔记——和为 K 的子数组(子串)">
-<meta property="og:url" content="http://example.com/2024/02/11/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%AD%90%E4%B8%B2/index.html">
+<meta property="og:title" content="刷题笔记——滑动窗口最大值（子串）">
+<meta property="og:url" content="http://example.com/2024/02/15/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%80%E5%A4%A7%E5%80%BC%EF%BC%88%E5%AD%90%E4%B8%B2%EF%BC%89/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="使用个人博客，记录我在leetcode刷题hot100全过程，本章节的内容是子串。 在这个题中，我本身是想用滑动窗口的方法写的。在经过了一段时间的挣扎后，发现此方法没有办法获取中间数字值的状态。于是参考了题解使用前缀和加哈希的思路，完成了题目。 题目给你一个整数数组 nums 和一个整数 k ，请你统计并返回 该数组中和为 k 的子数组的个数 。 子数组是数组中元素的连续非空序列。  示例 1：">
+<meta property="og:description" content="题目给你一个整数数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。 返回 滑动窗口中的最大值 。  示例1：  输入：nums &#x3D; [1,3,-1,-3,5,3,6,7], k &#x3D; 3 输出：[3,3,5,5,6,7] 1234567---------------">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-02-11T14:07:42.000Z">
-<meta property="article:modified_time" content="2024-02-24T09:49:07.460Z">
+<meta property="article:published_time" content="2024-02-15T13:34:50.000Z">
+<meta property="article:modified_time" content="2024-02-24T09:49:07.461Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="practice">
 <meta name="twitter:card" content="summary">
@@ -41,7 +41,7 @@
     
     <title>
         
-            刷题笔记——和为 K 的子数组(子串) -
+            刷题笔记——滑动窗口最大值（子串） -
         
         孙睿睿的博客站
     </title>
@@ -387,7 +387,7 @@
         <div class="article-title relative w-full">
             
                 <div class="w-full flex items-center pt-6 justify-start">
-                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">刷题笔记——和为 K 的子数组(子串)</h1>
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">刷题笔记——滑动窗口最大值（子串）</h1>
                 </div>
             
             </div>
@@ -408,8 +408,8 @@
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2024-02-11 22:07:42</span>
-        <span class="mobile">2024-02-11 22:07:42</span>
+        <span class="desktop">2024-02-15 21:34:50</span>
+        <span class="mobile">2024-02-15 21:34:50</span>
         <span class="hover-info">Created</span>
     </span>
     
@@ -454,32 +454,30 @@
 
 
         <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-            <p>使用个人博客，记录我在leetcode刷题hot100全过程，本章节的内容是子串。</p>
-<p>在这个题中，我本身是想用滑动窗口的方法写的。在经过了一段时间的挣扎后，发现此方法没有办法获取中间数字值的状态。于是参考了题解使用前缀和加哈希的思路，完成了题目。</p>
-<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给你一个整数数组 nums 和一个整数 k ，请你统计并返回 该数组中和为 k 的子数组的个数 。</p>
-<p>子数组是数组中元素的连续非空序列。</p>
+            <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给你一个整数数组 <code>nums</code>，有一个大小为 <code>k</code> 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 <code>k</code> 个数字。滑动窗口每次只向右移动一位。</p>
+<p>返回 <em>滑动窗口中的最大值</em> 。</p>
 <blockquote>
-<p><strong>示例 1：</strong></p>
+<p><strong>示例1：</strong></p>
 <blockquote>
-<p>输入：nums &#x3D; [1,1,1], k &#x3D; 2</p>
-<p>输出：2</p>
-</blockquote>
-<p><strong>示例 2：</strong></p>
-<blockquote>
-<p>输入：nums &#x3D; [1,2,3], k &#x3D; 3</p>
-<p>输出：2</p>
+<p>输入：nums &#x3D; [1,3,-1,-3,5,3,6,7], k &#x3D; 3</p>
+<p>输出：[3,3,5,5,6,7]</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">---------------               -----</span><br><span class="line">[<span class="number">1</span>  <span class="number">3</span>  <span class="number">-1</span>] <span class="number">-3</span>  <span class="number">5</span>  <span class="number">3</span>  <span class="number">6</span>  <span class="number">7</span>       <span class="number">3</span></span><br><span class="line"> <span class="number">1</span> [<span class="number">3</span>  <span class="number">-1</span>  <span class="number">-3</span>] <span class="number">5</span>  <span class="number">3</span>  <span class="number">6</span>  <span class="number">7</span>       <span class="number">3</span></span><br><span class="line"> <span class="number">1</span>  <span class="number">3</span> [<span class="number">-1</span>  <span class="number">-3</span>  <span class="number">5</span>] <span class="number">3</span>  <span class="number">6</span>  <span class="number">7</span>       <span class="number">5</span></span><br><span class="line"> <span class="number">1</span>  <span class="number">3</span>  <span class="number">-1</span> [<span class="number">-3</span>  <span class="number">5</span>  <span class="number">3</span>] <span class="number">6</span>  <span class="number">7</span>       <span class="number">5</span></span><br><span class="line"> <span class="number">1</span>  <span class="number">3</span>  <span class="number">-1</span>  <span class="number">-3</span> [<span class="number">5</span>  <span class="number">3</span>  <span class="number">6</span>] <span class="number">7</span>       <span class="number">6</span></span><br><span class="line"> <span class="number">1</span>  <span class="number">3</span>  <span class="number">-1</span>  <span class="number">-3</span>  <span class="number">5</span> [<span class="number">3</span>  <span class="number">6</span>  <span class="number">7</span>]      <span class="number">7</span></span><br></pre></td></tr></table></figure></div>
 </blockquote>
 </blockquote>
-<h1 id="尝试1"><a href="#尝试1" class="headerlink" title="尝试1"></a>尝试1</h1><p>我的最初尝试是使用滑动窗口的方法，对于每个即将进入的元素，进行判断。但是忘记考虑负数的情况，最终在负数案例无法通过的条件下放弃了此方法。</p>
-<p>代码如下：</p>
-<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">subarraySum</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> k)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="type">int</span> t_s = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="type">int</span> l =<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="type">int</span> r = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="type">int</span> m = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  t_s = nums[l];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (l&lt;nums.<span class="built_in">size</span>())</span><br><span class="line"></span><br><span class="line">  &#123;</span><br><span class="line"></span><br><span class="line">​    <span class="keyword">if</span>(t_s&lt;k)</span><br><span class="line"></span><br><span class="line">​    &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">​      <span class="keyword">if</span>(r+<span class="number">1</span>&lt;nums.<span class="built_in">size</span>())</span><br><span class="line"></span><br><span class="line">​      &#123;</span><br><span class="line"></span><br><span class="line">​        r+=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">​        t_s+=nums[r];  </span><br><span class="line"></span><br><span class="line">​      &#125;<span class="keyword">else</span></span><br><span class="line"></span><br><span class="line">​      &#123;</span><br><span class="line"></span><br><span class="line">​        l+=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">​        t_s-=nums[l<span class="number">-1</span>];  </span><br><span class="line"></span><br><span class="line">​      &#125;</span><br><span class="line"></span><br><span class="line">​    &#125;</span><br><span class="line"></span><br><span class="line">​    <span class="keyword">else</span> <span class="keyword">if</span>(t_s==k)</span><br><span class="line"></span><br><span class="line">​    &#123;</span><br><span class="line"></span><br><span class="line">​      <span class="comment">/* code */</span></span><br><span class="line"></span><br><span class="line">​      m++;</span><br><span class="line"></span><br><span class="line">​      <span class="keyword">if</span>(r+<span class="number">1</span>&lt;nums.<span class="built_in">size</span>())</span><br><span class="line"></span><br><span class="line">​      &#123;</span><br><span class="line"></span><br><span class="line">​        r+=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">​        l+=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">​        t_s = t_s-nums[l<span class="number">-1</span>]+nums[r];</span><br><span class="line"></span><br><span class="line">​      &#125;<span class="keyword">else</span> <span class="keyword">if</span> (l+<span class="number">1</span>&lt;nums.<span class="built_in">size</span>())</span><br><span class="line"></span><br><span class="line">​      &#123;</span><br><span class="line"></span><br><span class="line">​        <span class="comment">/* code */</span></span><br><span class="line"></span><br><span class="line">​        l+=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">​        t_s = t_s-nums[l<span class="number">-1</span>];</span><br><span class="line"></span><br><span class="line">​      &#125;<span class="keyword">else</span></span><br><span class="line"></span><br><span class="line">​      &#123;</span><br><span class="line"></span><br><span class="line">​        l++;</span><br><span class="line"></span><br><span class="line">​      &#125;</span><br><span class="line"></span><br><span class="line">​      </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">​    &#125;</span><br><span class="line"></span><br><span class="line">​    <span class="keyword">else</span></span><br><span class="line"></span><br><span class="line">​    &#123;</span><br><span class="line"></span><br><span class="line">​      <span class="keyword">if</span>(l==r&amp;&amp;l&lt;nums.<span class="built_in">size</span>())</span><br><span class="line"></span><br><span class="line">​      &#123;</span><br><span class="line"></span><br><span class="line">​        r+=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">​        l+=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">​      &#125;</span><br><span class="line"></span><br><span class="line">​      <span class="keyword">while</span> (l&lt;r)</span><br><span class="line"></span><br><span class="line">​      &#123;</span><br><span class="line"></span><br><span class="line">​        <span class="comment">/* code */</span></span><br><span class="line"></span><br><span class="line">​        l+=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">​        t_s-=nums[l<span class="number">-1</span>]; </span><br><span class="line"></span><br><span class="line">​      &#125;</span><br><span class="line"></span><br><span class="line">​    &#125;</span><br><span class="line"></span><br><span class="line">​    </span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> m;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>单纯的暴力遍历比较，需要的时间复杂度是nk，这样通过不了最终的结果。</p>
+<p>本次学习了优先队列和单调队列的解法，之后学习分块加预处理的解法。</p>
+<h1 id="优先队列"><a href="#优先队列" class="headerlink" title="优先队列"></a>优先队列</h1><p>优先队列是c++中写好的库。之前刷题的时候使用过优先队列，<del>但是因为自己很久没用所以忘掉了</del>。使用优先队列可以直接调用大根堆或者小根堆，其大根和小根正好满足题目的需求。他的时间复杂度是nlogn。</p>
+<p>具体来说，将每个需要的元素和其索引放入优先队列中，其值作为优先队列的匹配项，所以元素的值就会按照顺序存储。在插入元素后，根据其索引判断是否移除滑动窗口。</p>
+<p>这个方法我没有自己实现，使用的leetcode的题解()，代码如下：</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">maxSlidingWindow</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> n = nums.<span class="built_in">size</span>();</span><br><span class="line">        priority_queue&lt;pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&gt; q;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; k; ++i) &#123;</span><br><span class="line">            q.<span class="built_in">emplace</span>(nums[i], i);</span><br><span class="line">        &#125;</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt; ans = &#123;q.<span class="built_in">top</span>().first&#125;;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = k; i &lt; n; ++i) &#123;</span><br><span class="line">            q.<span class="built_in">emplace</span>(nums[i], i);</span><br><span class="line">            <span class="keyword">while</span> (q.<span class="built_in">top</span>().second &lt;= i - k) &#123;</span><br><span class="line">                q.<span class="built_in">pop</span>();</span><br><span class="line">            &#125;</span><br><span class="line">            ans.<span class="built_in">push_back</span>(q.<span class="built_in">top</span>().first);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">作者：力扣官方题解</span><br><span class="line">链接：https:<span class="comment">//leetcode.cn/problems/sliding-window-maximum/solutions/</span></span><br><span class="line">来源：力扣（LeetCode）</span><br><span class="line">著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</span><br></pre></td></tr></table></figure></div>
 
-<h1 id="前缀和-哈希表"><a href="#前缀和-哈希表" class="headerlink" title="前缀和+哈希表"></a>前缀和+哈希表</h1><p>使用此方法是参考了题解。使用哈希表记录了之前前缀的所有和，在遍历新元素时，将新元素与之前的前缀和相加即得到了最新的所有前缀的总和。</p>
-<p>将此和与之前存在哈希中的前缀和比较，如果他们的差值为k，即得到了满足条件的子串。</p>
+<h1 id="单调队列"><a href="#单调队列" class="headerlink" title="单调队列"></a>单调队列</h1><p>这个使用c++的deque实现（窗口）。具体来说，就是通过比较，将值的索引存储到一个根据其值单调性情况的窗口中。其滑动窗口调整的方法和上文一致。</p>
+<p>因为比较过程中，在单次比较时已经将较小值提前剔除，也就使比较次数在之后降低，大幅减少了时间复杂度（最多只需要剔除一次和插入一次）。所以时间复杂度为n。</p>
 <p>代码如下：</p>
-<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">subarraySum</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> k)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    unordered_map&lt;<span class="type">int</span>,<span class="type">int</span>&gt;l;</span><br><span class="line">    <span class="type">int</span> o = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i =<span class="number">0</span>;i&lt;nums.<span class="built_in">size</span>();i++)</span><br><span class="line">    &#123;</span><br><span class="line">        sum+=nums[i];</span><br><span class="line">        <span class="keyword">if</span>(l.<span class="built_in">find</span>(sum-k)!=l.<span class="built_in">end</span>())</span><br><span class="line">        &#123;</span><br><span class="line">            o+=l[sum-k];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (sum-k==<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            o++;</span><br><span class="line">        &#125;</span><br><span class="line">        l[sum] += <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> x=<span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> o;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">maxSlidingWindow</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> k)</span> </span>&#123;</span><br><span class="line">    deque&lt;<span class="type">int</span>&gt;m;</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; r;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i =<span class="number">0</span>;i&lt;k;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span>(!m.<span class="built_in">empty</span>()&amp;&amp;nums[m.<span class="built_in">back</span>()]&lt;nums[i])</span><br><span class="line">        &#123;</span><br><span class="line">            m.<span class="built_in">pop_back</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        m.<span class="built_in">push_back</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    r.<span class="built_in">push_back</span>(nums[m.<span class="built_in">front</span>()]);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = k;i&lt;nums.<span class="built_in">size</span>();i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span>(!m.<span class="built_in">empty</span>()&amp;&amp;nums[m.<span class="built_in">back</span>()]&lt;nums[i])</span><br><span class="line">        &#123;</span><br><span class="line">            m.<span class="built_in">pop_back</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        m.<span class="built_in">push_back</span>(i);</span><br><span class="line">        <span class="keyword">if</span>(m.<span class="built_in">front</span>()&lt;=i-k)</span><br><span class="line">        &#123;</span><br><span class="line">            m.<span class="built_in">pop_front</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        r.<span class="built_in">push_back</span>(nums[m.<span class="built_in">front</span>()]);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> r;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
 
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>做这道题的时候也是比较呆，没有想到合理的数据结构。希望能够记得这个题目，在之后能用到的时候用上。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>总是没有办法想到合适的方法，往往忘记索引对于滑动窗口的重要程度。不能总想使用各种insert或者delete方法，最好能够巧妙的使用数据结构实现对应的任务。</p>
+<p>通过此题，我领悟到可以使用优先队列和单调队列来解决极大值极小值滑动窗口问题，希望以后遇到此类问题可以很好地解决！</p>
 
         </div>
 
@@ -487,10 +485,10 @@
             <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> 刷题笔记——和为 K 的子数组(子串)</li>
+        <li><strong>Title:</strong> 刷题笔记——滑动窗口最大值（子串）</li>
         <li><strong>Author:</strong> 孙睿睿</li>
         <li><strong>Created at
-                :</strong> 2024-02-11 22:07:42</li>
+                :</strong> 2024-02-15 21:34:50</li>
         
             <li>
                 <strong>Updated at
@@ -498,7 +496,7 @@
             </li>
         
         <li>
-            <strong>Link:</strong> https://redefine.ohevan.com/2024/02/11/刷题笔记——子串/
+            <strong>Link:</strong> https://redefine.ohevan.com/2024/02/15/刷题笔记——滑动窗口最大值（子串）/
         </li>
         <li>
             <strong>
@@ -534,13 +532,13 @@
                     <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
                         <a class="prev"
                         rel="prev"
-                        href="/2024/02/15/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%80%E5%A4%A7%E5%80%BC%EF%BC%88%E5%AD%90%E4%B8%B2%EF%BC%89/"
+                        href="/2024/02/17/rust%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%A4%8D%E5%90%88%E7%B1%BB%E5%9E%8B%EF%BC%88%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%EF%BC%89/"
                         >
                             <span class="left arrow-icon flex justify-center items-center">
                                 <i class="fa-solid fa-chevron-left"></i>
                             </span>
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">刷题笔记——滑动窗口最大值（子串）</span>
+                                <span class="post-nav-title-item">rust语言学习笔记——复合类型（基础语法）</span>
                                 <span class="post-nav-item">Prev posts</span>
                             </span>
                         </a>
@@ -550,10 +548,10 @@
                     <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
                         <a class="next"
                         rel="next"
-                        href="/2024/02/11/hello-world/"
+                        href="/2024/02/11/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%AD%90%E4%B8%B2/"
                         >
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">我的第一篇博客</span>
+                                <span class="post-nav-title-item">刷题笔记——和为 K 的子数组(子串)</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">
@@ -616,8 +614,8 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">刷题笔记——和为 K 的子数组(子串)</div>
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%9D%E8%AF%951"><span class="nav-text">尝试1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%BC%80%E5%92%8C-%E5%93%88%E5%B8%8C%E8%A1%A8"><span class="nav-text">前缀和+哈希表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol>
+        <div class="page-title">刷题笔记——滑动窗口最大值（子串）</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-text">思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97"><span class="nav-text">优先队列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97"><span class="nav-text">单调队列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol>
 
     </div>
 </div>
