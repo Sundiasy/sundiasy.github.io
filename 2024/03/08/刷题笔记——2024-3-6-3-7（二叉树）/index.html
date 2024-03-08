@@ -13,32 +13,32 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://Sundiasy.github.io/2024/03/07/刷题笔记——2024-3-6-3-7（链表）/"/>
+    <link rel="canonical" href="http://Sundiasy.github.io/2024/03/08/刷题笔记——2024-3-6-3-7（二叉树）/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
         <meta name="description" content="2024&#x2F;3&#x2F;6-3&#x2F;7前几天有一天发烧了，没有刷题，故这几天一共刷了6道题。 二叉树的直径 给你一棵二叉树的根节点，返回该树的 直径 。 二叉树的 直径 是指树中任意两个节点之间最长路径的 长度 。这条路径可能经过也可能不经过根节点 root 。 两节点之间路径的 长度 由它们之间边数表示。    输入：root &#x3D; [1,2,3,4,5] 输出：3 解释">
 <meta property="og:type" content="article">
-<meta property="og:title" content="刷题笔记——2024&#x2F;3&#x2F;6-3&#x2F;7">
-<meta property="og:url" content="http://sundiasy.github.io/2024/03/07/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%942024-3-6-3-7%EF%BC%88%E9%93%BE%E8%A1%A8%EF%BC%89/index.html">
+<meta property="og:title" content="刷题笔记——2024-3-6-3-7（二叉树）">
+<meta property="og:url" content="http://sundiasy.github.io/2024/03/08/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%942024-3-6-3-7%EF%BC%88%E4%BA%8C%E5%8F%89%E6%A0%91%EF%BC%89/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="2024&#x2F;3&#x2F;6-3&#x2F;7前几天有一天发烧了，没有刷题，故这几天一共刷了6道题。 二叉树的直径 给你一棵二叉树的根节点，返回该树的 直径 。 二叉树的 直径 是指树中任意两个节点之间最长路径的 长度 。这条路径可能经过也可能不经过根节点 root 。 两节点之间路径的 长度 由它们之间边数表示。    输入：root &#x3D; [1,2,3,4,5] 输出：3 解释">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://sundiasy.github.io/2024/03/07/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%942024-3-6-3-7%EF%BC%88%E9%93%BE%E8%A1%A8%EF%BC%89/image.png">
-<meta property="og:image" content="http://sundiasy.github.io/2024/03/07/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%942024-3-6-3-7%EF%BC%88%E9%93%BE%E8%A1%A8%EF%BC%89/image-1.png">
-<meta property="og:image" content="http://sundiasy.github.io/2024/03/07/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%942024-3-6-3-7%EF%BC%88%E9%93%BE%E8%A1%A8%EF%BC%89/image-2.png">
-<meta property="og:image" content="http://sundiasy.github.io/2024/03/07/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%942024-3-6-3-7%EF%BC%88%E9%93%BE%E8%A1%A8%EF%BC%89/image-3.png">
-<meta property="og:image" content="http://sundiasy.github.io/2024/03/07/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%942024-3-6-3-7%EF%BC%88%E9%93%BE%E8%A1%A8%EF%BC%89/image-4.png">
-<meta property="article:published_time" content="2024-03-07T12:18:28.000Z">
-<meta property="article:modified_time" content="2024-03-07T13:27:12.207Z">
+<meta property="og:image" content="d:\grade3\myblog\source\_posts\image.png">
+<meta property="og:image" content="d:\grade3\myblog\source\_posts\image-1.png">
+<meta property="og:image" content="d:\grade3\myblog\source\_posts\image-2.png">
+<meta property="og:image" content="d:\grade3\myblog\source\_posts\image-3.png">
+<meta property="og:image" content="d:\grade3\myblog\source\_posts\image-4.png">
+<meta property="article:published_time" content="2024-03-08T06:30:27.000Z">
+<meta property="article:modified_time" content="2024-03-08T06:31:29.227Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="递归">
 <meta property="article:tag" content="二叉树">
 <meta property="article:tag" content="dfs">
 <meta property="article:tag" content="bfs">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://sundiasy.github.io/2024/03/07/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%942024-3-6-3-7%EF%BC%88%E9%93%BE%E8%A1%A8%EF%BC%89/image.png">
+<meta name="twitter:image" content="d:\grade3\myblog\source\_posts\image.png">
     
     
     <!--- Icon Part-->
@@ -50,7 +50,7 @@
     
     <title>
         
-            刷题笔记——2024/3/6-3/7 -
+            刷题笔记——2024-3-6-3-7（二叉树） -
         
         孙睿睿的博客站
     </title>
@@ -396,7 +396,7 @@
         <div class="article-title relative w-full">
             
                 <div class="w-full flex items-center pt-6 justify-start">
-                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">刷题笔记——2024/3/6-3/7</h1>
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">刷题笔记——2024-3-6-3-7（二叉树）</h1>
                 </div>
             
             </div>
@@ -417,15 +417,15 @@
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2024-03-07 20:18:28</span>
-        <span class="mobile">2024-03-07 20:18:28</span>
+        <span class="desktop">2024-03-08 14:30:27</span>
+        <span class="mobile">2024-03-08 14:30:27</span>
         <span class="hover-info">Created</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-03-07 21:27:12</span>
-            <span class="mobile">2024-03-07 21:27:12</span>
+            <span class="desktop">2024-03-08 14:31:29</span>
+            <span class="mobile">2024-03-08 14:31:29</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -498,7 +498,7 @@
 <img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="image.png"
+                     data-src="D:\grade3\myblog\source\_posts\image.png"
                       width = "50%"
                 >
 
@@ -520,7 +520,7 @@
 <p><strong>示例 1：</strong><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="image-1.png"
+                     data-src="D:\grade3\myblog\source\_posts\image-1.png"
                       alt="alt text" style="zoom:50%;" 
                 ></p>
 <blockquote>
@@ -536,7 +536,7 @@
 <img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="image-2.png"
+                     data-src="D:\grade3\myblog\source\_posts\image-2.png"
                       alt="alt text" style="zoom:50%;" 
                 >
 
@@ -572,7 +572,7 @@
 <img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="image-3.png"
+                     data-src="D:\grade3\myblog\source\_posts\image-3.png"
                       style="zoom:50%;" 
                 >
 
@@ -590,9 +590,10 @@
 <img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="image-4.png"
+                     data-src="D:\grade3\myblog\source\_posts\image-4.png"
                       style="zoom:50%;" 
                 >
+
 
 <blockquote>
 <p>输入：[1,2,3,null,5,null,4]</p>
@@ -614,18 +615,18 @@
             <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> 刷题笔记——2024/3/6-3/7</li>
+        <li><strong>Title:</strong> 刷题笔记——2024-3-6-3-7（二叉树）</li>
         <li><strong>Author:</strong> 孙睿睿</li>
         <li><strong>Created at
-                :</strong> 2024-03-07 20:18:28</li>
+                :</strong> 2024-03-08 14:30:27</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-03-07 21:27:12
+                    :</strong> 2024-03-08 14:31:29
             </li>
         
         <li>
-            <strong>Link:</strong> https://redefine.ohevan.com/2024/03/07/刷题笔记——2024-3-6-3-7（链表）/
+            <strong>Link:</strong> https://redefine.ohevan.com/2024/03/08/刷题笔记——2024-3-6-3-7（二叉树）/
         </li>
         <li>
             <strong>
@@ -740,7 +741,7 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">刷题笔记——2024/3/6-3/7</div>
+        <div class="page-title">刷题笔记——2024-3-6-3-7（二叉树）</div>
         <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2024-3-6-3-7"><span class="nav-text">2024&#x2F;3&#x2F;6-3&#x2F;7</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%9B%B4%E5%BE%84"><span class="nav-text">二叉树的直径 </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%B1%82%E5%BA%8F%E9%81%8D%E5%8E%86"><span class="nav-text">二叉树的层序遍历 </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF-1"><span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-1"><span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91"><span class="nav-text">将有序数组转换为二叉搜索树 </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF-2"><span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-2"><span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91"><span class="nav-text">验证二叉搜索树 </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF-3"><span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-3"><span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E4%B8%AD%E7%AC%ACK%E5%B0%8F%E7%9A%84%E5%85%83%E7%B4%A0"><span class="nav-text">二叉搜索树中第K小的元素 </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF-4"><span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-4"><span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%8F%B3%E8%A7%86%E5%9B%BE"><span class="nav-text">二叉树的右视图 </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF-5"><span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-5"><span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol>
 
     </div>
