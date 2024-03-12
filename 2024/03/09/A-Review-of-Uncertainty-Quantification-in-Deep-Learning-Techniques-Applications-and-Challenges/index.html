@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="孙睿睿">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://Sundiasy.github.io/2024/03/09/a-review-of-uncertainty-quantification-in-deep-learning-techniques-applications-and-challenges/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="A Review of Uncertainty Quantification in Deep Learning: Techniques, Applications and Challenges前言在机器学习中，不确定性量化（Uncertainty Quantification）和Softmax是两个相关但不同的概念。  不确定性量化：指的是在机器学习模型中对预测结果的不确定性进行量化和评估。在实际">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文阅读——A Review of Uncertainty Quantification in Deep Learning:Techniques, Applications and Challenges（不确定性分析）">
+<meta property="og:url" content="http://sundiasy.github.io/2024/03/09/A-Review-of-Uncertainty-Quantification-in-Deep-Learning-Techniques-Applications-and-Challenges/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="A Review of Uncertainty Quantification in Deep Learning: Techniques, Applications and Challenges前言在机器学习中，不确定性量化（Uncertainty Quantification）和Softmax是两个相关但不同的概念。  不确定性量化：指的是在机器学习模型中对预测结果的不确定性进行量化和评估。在实际">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240311195947040.png">
+<meta property="og:image" content="c:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240311200035796.png">
+<meta property="article:published_time" content="2024-03-09T07:35:32.000Z">
+<meta property="article:modified_time" content="2024-03-12T13:54:04.509Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="不确定性">
+<meta property="article:tag" content="模型自信">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240311195947040.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            论文阅读——A Review of Uncertainty Quantification in Deep Learning:Techniques, Applications and Challenges（不确定性分析） -
+        
+        孙睿睿的博客站
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+        <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    
+<script src="/js/libs/anime.min.js"></script>
+
+    <h1 class="ml13">
+        孙睿睿的博客站
+    </h1>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+
+        anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [100,0],
+                translateZ: 0,
+                opacity: [0,1],
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i
+            }).add({
+            targets: '.ml13 .letter',
+            translateY: [0,-100],
+            opacity: [1,0],
+            easing: "easeInExpo",
+            duration: 1200,
+            delay: (el, i) => 100 + 30 * i
+        });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            hidePreloaderAfterTimeout(1000); // Hide after 1000 milliseconds once the window has loaded
+        });
+
+        // Backup failsafe: Hide preloader after a maximum of 5000 milliseconds, regardless of the window load event
+        hidePreloaderAfterTimeout(5000);
+
+        function hidePreloaderAfterTimeout(delay) {
+            setTimeout(function () {
+                var preloader = document.querySelector('.preloader');
+                preloader.style.opacity = '0';
+                setTimeout(function () {
+                    preloader.style.display = 'none';
+                }, 200);
+            }, delay);
+        }
+    </script>
+</div>
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"sundiasy.github.io","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"5rem","h2":"4rem","h3":"2.8rem","h4":"2.5rem","h5":"2.2rem","h6":"2rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"孙睿睿的博客站","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.1","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                孙睿睿的博客站
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">20</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">3</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">25</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">论文阅读——A Review of Uncertainty Quantification in Deep Learning:Techniques, Applications and Challenges（不确定性分析）</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/redefine-avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">孙睿睿</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-03-09 15:35:32</span>
+        <span class="mobile">2024-03-09 15:35:32</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-03-12 21:54:04</span>
+            <span class="mobile">2024-03-12 21:54:04</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7/">不确定性</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E6%A8%A1%E5%9E%8B%E8%87%AA%E4%BF%A1/">模型自信</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1 id="A-Review-of-Uncertainty-Quantification-in-Deep-Learning-Techniques-Applications-and-Challenges"><a href="#A-Review-of-Uncertainty-Quantification-in-Deep-Learning-Techniques-Applications-and-Challenges" class="headerlink" title="A Review of Uncertainty Quantification in Deep Learning: Techniques, Applications and Challenges"></a>A Review of Uncertainty Quantification in Deep Learning: Techniques, Applications and Challenges</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在机器学习中，不确定性量化（Uncertainty Quantification）和Softmax是两个相关但不同的概念。</p>
+<ol>
+<li><strong>不确定性量化</strong>：指的是在机器学习模型中对预测结果的不确定性进行量化和评估。在实际应用中，模型的预测结果往往并非绝对准确的值，而是伴随着一定的不确定性。例如，当模型对一张图片进行分类时，它可能会输出类别概率分布，而不仅仅是一个确定的类别标签。不确定性量化的目的是帮助我们理解模型对预测结果的置信程度，以及在不确定性较高时如何进行更可靠的决策。</li>
+<li><strong>Softmax</strong>：Softmax是一种常用的激活函数，通常用于多类别分类任务中的输出层。它将模型的原始输出转换为表示类别概率分布的形式。Softmax函数会将原始的输出值通过指数函数进行归一化，使得所有类别的概率之和为1。这样可以使得模型输出的结果更易于解释，同时也方便计算损失函数，比如交叉熵损失函数。</li>
+</ol>
+<p>区别：</p>
+<ul>
+<li><strong>功能</strong>：不确定性量化是一种用于评估模型预测结果不确定性的技术，而Softmax是一种激活函数，用于将原始输出转换为类别概率分布。</li>
+<li><strong>应用领域</strong>：不确定性量化可以应用于任何机器学习模型，而Softmax通常用于多类别分类任务中的神经网络模型。</li>
+<li><strong>输出形式</strong>：不确定性量化可能会输出一系列的预测结果及其对应的不确定性度量，而Softmax会将输出转换为类别概率分布的形式。</li>
+</ul>
+<p>为什么要不确定性量化：</p>
+<ul>
+<li><strong>决策可靠性评估</strong>：在很多实际应用中，对于模型的预测结果，了解其不确定性是非常重要的。比如在医疗诊断中，医生不仅希望知道模型判断一位患者是患有某种疾病，还想知道模型对于这个判断的可信度有多高。</li>
+<li><strong>风险管理</strong>：在一些涉及风险的领域，比如金融领域或自动驾驶领域，了解模型预测的不确定性可以帮助管理风险，减少意外事件的发生。</li>
+<li><strong>决策制定</strong>：在一些需要快速决策的场景下，对模型预测结果不确定性的理解可以帮助制定更加谨慎和可靠的决策。</li>
+</ul>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p><strong><em>数据不确定性</em>&amp;&amp;<em>任意不确定性</em>：AU</strong></p>
+<p>The sources of uncertainty occurs when the test and training data are mismatched and **data uncertainty occurs because of class overlap or due to the presence of noise in the data . **</p>
+<p>即数据中不可减少的不确定性导致预测的不确定性是任意不确定性</p>
+<p><strong><em>知识不确定性</em>&amp;&amp;<em>认知不确定性</em>：EU</strong></p>
+<p>是由于知识和数据不足而发生的认知不确定性。</p>
+<p><strong>明显的不确定性</strong>：</p>
+<ul>
+<li>(i) 训练数据的选择和收集，</li>
+<li>(ii) 训练数据的完整性和准确性，</li>
+<li>(iii) 理解具有性能界限的 DL（或传统机器学习）模型及其性能局限性，以及</li>
+<li>(iv)不确定性对应于基于操作数据的模型的性能</li>
+</ul>
+<p><strong>挑战</strong>：</p>
+<ul>
+<li>（i）缺乏理论，</li>
+<li>（ii）缺乏随意模型，</li>
+<li>（iii）对不完美数据的敏感性，以及</li>
+<li>（iv）计算费用。</li>
+</ul>
+<h2 id="目标大纲"><a href="#目标大纲" class="headerlink" title="目标大纲"></a>目标大纲</h2><p>神经网络，计算概率，loss。</p>
+<p><strong>PU&#x3D;EU+AU</strong></p>
+<h3 id="uncertainty-modeling"><a href="#uncertainty-modeling" class="headerlink" title="uncertainty modeling"></a>uncertainty modeling</h3><p>q(w)来近似逼近p(w)的后验分布。</p>
+<p>计算w</p>
+<p>具体来说，给出先验，给出训练值，多次训练，得出后验。（变分推理）</p>
+<h2 id="贝叶斯解决不确定性量化"><a href="#贝叶斯解决不确定性量化" class="headerlink" title="贝叶斯解决不确定性量化"></a>贝叶斯解决不确定性量化</h2><p>可靠可解释的信息学习，贝叶斯神经网络。</p>
+<h3 id="Monte-Carlo-MC-dropout"><a href="#Monte-Carlo-MC-dropout" class="headerlink" title="Monte Carlo (MC) dropout"></a>Monte Carlo (MC) dropout</h3><p><del>后验不好计算，对应uncertainty modeling。使用dropout作为正则化项。</del></p>
+<p><del>查询资料得知，dropout可以让某些节点的输出结果为0，在test阶段多次预测取平均，估计不确定性。</del></p>
+<ol>
+<li><strong>Dropout 正则化</strong>：在训练过程中，Dropout 正则化随机地将神经网络中的一部分单元置零。这相当于在每次训练迭代中，随机采样出一组不同的子网络。</li>
+<li><strong>多次预测</strong>：在进行预测时，我们对网络进行多次前向传播，每次都使用不同的 Dropout 掩码。这意味着对于每个输入，我们得到了多个预测结果。</li>
+<li><strong>计算后验分布</strong>：对于每次预测，我们都可以记录输出的概率分布。通过对这些分布进行聚合，例如取平均值，我们可以获得参数的后验概率估计。这是因为不同的 Dropout 掩码相当于在参数空间中对应于不同的样本路径，从而在参数空间中提供了一些不确定性。</li>
+<li><strong>近似推断</strong>：蒙特卡洛 Dropout 可以看作是对近似贝叶斯推断的一种形式。它通过对模型的多次采样来近似计算参数的后验分布，而不需要显式地计算参数的梯度或者完整的后验概率分布。</li>
+</ol>
+<p><em>MC dropout 的 MC 体现在我们需要对同一个输入进行多次前向传播过程，这样在 dropout 的加持下可以得到“不同网络结构”的输出，将这些输出进行平均和统计方差，即可得到模型的预测结果及 uncertainty。而且，这个过程是可以并行的，所以在时间上可以等于进行一次前向传播。</em></p>
+<p>通过dropout计算可信程度。多个结果计算预测熵，越小则预测可信度高。或方差。</p>
+<h3 id="Markov-chain-Monte-Carlo（MCMC）"><a href="#Markov-chain-Monte-Carlo（MCMC）" class="headerlink" title="Markov chain Monte Carlo（MCMC）"></a>Markov chain Monte Carlo（MCMC）</h3><p><strong>MCMC方法是用来在概率空间，通过随机采样估算兴趣参数的后验分布</strong>。</p>
+<p>MCMC（Markov Chain Monte Carlo）是一种用于从复杂分布中抽样的统计方法。它通过构建马尔可夫链，使得该链的平稳分布恰好是我们所希望抽样的目标分布，然后使用该链进行抽样。MCMC方法在贝叶斯统计学中广泛应用，特别是用于计算参数的后验分布。</p>
+<ol>
+<li><strong>马尔可夫链</strong>： 马尔可夫链是一个状态空间上的随机过程，具有马尔可夫性质，即给定当前状态，未来状态的条件概率只取决于当前状态，而与过去状态无关。马尔可夫链通常由一个转移矩阵描述，该矩阵包含了从一个状态转移到另一个状态的概率。</li>
+<li><strong>平稳分布</strong>： 如果一个马尔可夫链在足够长的时间后，其状态分布不再随时间变化而达到了平稳状态，那么这个平稳状态分布称为该链的平稳分布。对于 MCMC，我们希望构建的马尔可夫链的平稳分布正是我们要抽样的目标分布。</li>
+<li><strong>Metropolis-Hastings算法</strong>： Metropolis-Hastings算法是一种常用的MCMC抽样方法。它基于一个提议分布，通过接受-拒绝的方法，在当前状态的基础上生成新的状态，并根据一定的概率规则来接受或拒绝该状态转移。</li>
+<li><strong>Gibbs采样</strong>： Gibbs采样是一种特殊的Metropolis-Hastings算法，用于多维变量的抽样。在Gibbs采样中，我们从每个维度的条件分布中抽样，给定其他维度的当前值。</li>
+<li><strong>后验分布抽样</strong>： 在贝叶斯统计中，我们希望从参数的后验分布中抽样，以获得对参数的分布形状和不确定性的估计。MCMC方法可以用来从后验分布中抽样，以获取对参数的分布估计。</li>
+</ol>
+<h4 id="蒙特卡洛"><a href="#蒙特卡洛" class="headerlink" title="蒙特卡洛"></a>蒙特卡洛</h4><p>蒙特卡洛方法来自于摩纳哥的蒙特卡洛赌场，许多纸牌类游戏需要计算其胜利的概率。我们可以将蒙特卡洛理解为简单的模拟，通过模拟的情景来计算其发生的概率。</p>
+<h4 id="马尔科夫链"><a href="#马尔科夫链" class="headerlink" title="马尔科夫链"></a>马尔科夫链</h4><p>马尔可夫性质是指在给定的一个随机过程（stochastic process）中，在某一个时间点的状态为xn ，其下一个状态 xn+1&#x3D;k的概率（ k代表 m 种状态里的任何一种），仅仅取决于现在这个它在给定时刻处于哪一种状态，而与它是如何达到现在的状态的无关。换句话说，该随机过程没有记忆性。</p>
+<p>状态转移的概率。获得<strong>静态分布</strong></p>
+<p><strong>静止状态分布的重要性在于它可以让你在随机的时间里，对于一个系统的任意一个状态确定其概率。</strong>（***The stationary state distribution is important because it lets you define the probability for every state of a system at a random time.***）尝试从其他状态出发，但最终的静态分布一定是相同的。（平稳分布）</p>
+<p><strong>理解为后验分布的估计方法</strong>，抽样降低计算成本。</p>
+<h3 id="变分推理Variational-Inference"><a href="#变分推理Variational-Inference" class="headerlink" title="变分推理Variational Inference"></a>变分推理Variational Inference</h3><p>Variational Inference（变分推断）是一种用于近似贝叶斯推断的方法，用于在复杂概率模型中估计后验分布。它通过将后验分布近似为一个简单的参数化分布，并通过优化参数来使这个近似分布尽可能接近真实的后验分布。Variational Inference通常用于处理高维或复杂的概率模型，其中精确的推断是困难的或不可行的。</p>
+<p>在贝叶斯统计中，我们通常希望计算给定观测数据 <em>X</em> 下参数 <em>θ</em> 的后验分布 <em>p</em>(<em>θ</em>∣<em>X</em>)。但是对于许多复杂的概率模型，这个后验分布可能无法直接计算或者计算非常困难。</p>
+<ol>
+<li><p><strong>变分推断</strong>： 变分推断提供了一种近似推断的方法，它将后验分布 <em>p</em>(<em>θ</em>∣<em>X</em>) 近似为一个简单的参数化分布 <em>q</em>(<em>θ</em>∣<em>λ</em>)，其中 <em>λ</em> 是分布 <em>q</em> 的参数。通常， <em>q</em> 被选择为具有较简单形式的分布，例如高斯分布或指数分布。</p>
+</li>
+<li><p><strong>优化目标</strong>： Variational Inference的目标是最小化近似分布<em>q</em>(<em>θ</em>∣<em>λ</em>) 和真实后验分布<em>p</em>(<em>θ</em>∣<em>X</em>) 之间的差异。这通常通过最小化 Kullback-Leibler 散度（KL散度）来实现：</p>
+<p>KL(<em>q</em>(<em>θ</em>∣<em>λ</em>)∣∣<em>p</em>(<em>θ</em>∣<em>X</em>))&#x3D;∫<em>q</em>(<em>θ</em>∣<em>λ</em>)log<em>p</em>(<em>θ</em>∣<em>X</em>)<em>q</em>(<em>θ</em>∣<em>λ</em>)<em>d</em> <em>θ</em></p>
+<p>优化过程可以通过调整参数<em>λ</em> 来实现，以使得 KL 散度最小化。</p>
+</li>
+<li><p><strong>优化方法</strong>： 优化 KL 散度通常等效于优化 ELBO（Evidence Lower Bound），ELBO 定义为：</p>
+<p>ELBO(<em>λ</em>)&#x3D;E<em>q</em>(<em>θ</em>∣<em>λ</em>)[log<em>p</em>(<em>X</em>,<em>θ</em>)]−E<em>q</em>(<em>θ</em>∣<em>λ</em>)[log<em>q</em>(<em>θ</em>∣<em>λ</em>)]</p>
+<p>优化 ELBO 相当于最大化观测数据的对数边际似然，并且最小化近似分布的熵。<strong>这通常通过随机梯度下降等优化算法来实现。</strong></p>
+</li>
+<li><p><strong>收敛性和近似质量</strong>： 通过迭代优化 ELBO，我们可以使得近似分布<em>q</em>(<em>θ</em>∣<em>λ</em>) 逐渐逼近真实后验分布<em>p</em>(<em>θ</em>∣<em>X</em>)。收敛性和近似质量取决于近似分布的选择以及优化算法的性能。</p>
+</li>
+</ol>
+<h3 id="Bayesian-Active-Learning-BAL"><a href="#Bayesian-Active-Learning-BAL" class="headerlink" title="Bayesian Active Learning (BAL)"></a>Bayesian Active Learning (BAL)</h3><p>Bayesian Active Learning（贝叶斯主动学习，简称BAL）是一种结合了贝叶斯统计和主动学习的方法，用于有效地选择并标记数据以提高机器学习模型性能。在BAL中，模型使用贝叶斯推断来估计参数的后验分布，并利用这些后验分布来指导数据选择过程，以便选择对模型参数估计最有益的数据进行标记。</p>
+<ol>
+<li><strong>贝叶斯推断</strong>： 在BAL中，我们假设模型的参数服从一个先验分布，并使用贝叶斯推断来估计参数的后验分布。这个后验分布反映了参数在观测数据下的不确定性，是BAL中的关键组成部分。</li>
+<li><strong>主动学习</strong>： <strong>主动学习是一种样本选择策略</strong>，其中模型通过选择最能提高性能的样本进行标记来进行学习。在BAL中，我们使用贝叶斯推断来指导主动学习的样本选择过程。具体来说，我们选择那些<strong>对模型参数后验分布具有最大信息增益的样本进行标记</strong>，以便最大化模型的性能提升。</li>
+<li><strong>不确定性估计</strong>： 在BAL中，我们利用贝叶斯推断得到的参数后验分布来估计模型的不确定性。这种不确定性可以用来量化模型对不同样本的预测置信度，从而指导样本选择过程。</li>
+<li><strong>样本选择策略</strong>： 根据模型的不确定性估计，我们可以设计不同的样本选择策略来指导主动学习过程。例如，我们可以选择那些模型对其预测最不确定的样本，或者选择那些对模型参数估计具有最大信息增益的样本。</li>
+<li><strong>迭代更新</strong>： 在BAL中，样本选择和模型参数估计通常是交替进行的。首先，利用当前模型参数估计选择最有益的样本进行标记；然后，使用标记的数据更新模型参数的后验分布。这个过程可以迭代进行，直到达到停止标准为止。</li>
+</ol>
+<blockquote>
+<p>感觉综述里论文的大部分主要还是使用了这种思路，对于贝叶斯推断的方法和主动学习的方法使用的各不相同（dropout或者…）。</p>
+</blockquote>
+<h3 id="Bayes-by-Backprop-BBB"><a href="#Bayes-by-Backprop-BBB" class="headerlink" title="Bayes by Backprop (BBB)"></a>Bayes by Backprop (BBB)</h3><p>Bayes by Backprop（BBB）是一种用于训练神经网络的贝叶斯推断方法，它使用反向传播算法来近似神经网络参数的后验分布。BBB结合了贝叶斯统计和反向传播算法，使得神经网络能够进行贝叶斯推断，从而提供对模型参数的不确定性估计。</p>
+<blockquote>
+<p>我认为相较于普通算法，这个的意思是在普通的深度学习权重、参数和偏置上引入了后验概率的意思吧。。</p>
+</blockquote>
+<ol>
+<li><strong>贝叶斯推断</strong>： 在传统的神经网络中，参数通常是通过最大化似然函数来进行学习的。而在Bayes by Backprop中，我们引入了一个先验分布来描述参数的不确定性，并使用贝叶斯推断来估计参数的后验分布。这个后验分布反映了参数在观测数据下的不确定性，使得神经网络能够提供对预测的不确定性估计。</li>
+<li><strong>变分推断</strong>： Bayes by Backprop使用变分推断来近似参数的后验分布。具体来说，我们选择一个简单的参数化分布来近似后验分布，例如高斯分布。然后，我们使用反向传播算法来优化这个近似分布的参数，以使得它尽可能接近真实的后验分布。</li>
+<li><strong>ELBO优化</strong>： 为了进行变分推断，我们通常会优化 Evidence Lower Bound（ELBO），它是后验分布和似然函数的差异的下界。通过最大化 ELBO，我们可以使得近似分布尽可能接近真实后验分布。</li>
+<li><strong>反向传播算法</strong>： Bayes by Backprop使用反向传播算法来优化 ELBO。具体来说，我们计算 ELBO 对网络参数的梯度，并使用梯度下降等优化算法来更新参数。这使得我们可以在训练神经网络的过程中进行贝叶斯推断。</li>
+<li><strong>不确定性估计</strong>： 通过训练后的神经网络，我们可以得到参数的后验分布，从而提供对预测的不确定性估计。这种不确定性估计对于决策制定、模型评估以及处理数据中的噪声和不确定性非常有用。</li>
+</ol>
+<blockquote>
+<p>感觉意思是变分推断然后使用反向传播优化梯度。</p>
+</blockquote>
+<h3 id="Variational-Autoencoders"><a href="#Variational-Autoencoders" class="headerlink" title="Variational Autoencoders"></a>Variational Autoencoders</h3><p>Variational Autoencoder（VAE，变分自编码器）是一种生成模型，结合了自动编码器（Autoencoder）和变分推断（Variational Inference）的思想。VAE是一种无监督学习的模型，用于学习数据的潜在表示和生成新的数据样本。</p>
+<p>以下是Variational Autoencoder的详细介绍：</p>
+<ol>
+<li><p><strong>自动编码器</strong>：<br>自动编码器是一种神经网络结构，由编码器和解码器两部分组成。编码器将输入数据编码成潜在空间中的低维表示，然后解码器将这个低维表示重构为原始数据。自动编码器通过最小化输入和重构数据之间的差异来学习数据的压缩表示，从而实现了数据的降维和特征学习。</p>
+</li>
+<li><p><strong>变分推断</strong>：<br>在传统的自动编码器中，编码器直接学习将输入数据映射到潜在空间的均值向量和方差向量。而在VAE中，我们引入了一个变分推断网络（即编码器的一部分），它学习将输入数据映射到潜在空间的概率分布。这个概率分布通常假设为高斯分布，其均值和方差是编码器的输出。</p>
+</li>
+<li><p><strong>重参数化技巧</strong>：<br>为了训练VAE，我们需要从编码器输出的概率分布中采样，以便实现梯度下降。为了使这个操作可导，我们使用重参数化技巧，即从一个固定的分布（例如标准正态分布）中采样，然后通过编码器输出的均值和方差来进行线性变换和缩放，从而得到潜在变量的采样。</p>
+</li>
+<li><p><strong>解码器</strong>：<br>解码器接收从编码器获得的潜在变量的采样，并将其解码为重构的数据样本。通常，解码器是一个神经网络，它通过最小化重构数据与原始数据之间的差异来学习生成数据的分布。</p>
+</li>
+<li><p><strong>ELBO优化</strong>：<br>为了训练VAE，我们通常优化 Evidence Lower Bound（ELBO）。ELBO是观测数据的边际似然的下界，通过最大化 ELBO，我们可以使得模型的后验分布尽可能接近真实后验分布。</p>
+</li>
+</ol>
+<p>在VAE中，输入数据$\text{x}$被映射到一个潜在的隐向量 $\text{z}$的分布上，这个分布通常假设为正态分布，其参数由输入数据决定。因此，VAE的关键在于学习输入数据的概率分布特性，而不仅仅是确定性的映射关系。</p>
+<h4 id="原理："><a href="#原理：" class="headerlink" title="原理："></a><strong>原理：</strong></h4><p>作者不是把输入映射成一个固定向量，而是把输入映射到一个分布上。记这种分布为$p_{\theta}$ ，其中 $\theta$为参数，输入$\text{x}$和隐编码向量的 $\text{z}$ 的关系可以定义为：$p_{\theta}(\mathbf{z})$ 为先验、$p_\theta(\mathbf{x}|\mathbf{z})$ 为似然、 $p_\theta(\mathbf{z}|\mathbf{x})$ 为后验</p>
+<p>假设我们知道分布的真实参数 $\theta^{<em>}$ ，为了生成一个和 $ x^{(i)}$ 一样的样例，我们做以下两步：首先，从先验分布 $p_{\theta</em>}(z)$ 中采样出一个 $z^{(i)}$ 。然后，从条件分布 $p_{\theta*}(x|z&#x3D;z^{(i})$ 中生成 $x^{(i)}$ 。把最大化生成真实数据样例的可能性作为参数 $\theta^{<em>}$ 的优化：<br>$$<br>\theta^</em>&#x3D;\arg\max_\theta\prod_{i&#x3D;1}^np_\theta(\mathbf{x}^{(i)})<br>$$<br> 我们取对数把累乘换成累加的形式：<br>$$<br>\theta^*&#x3D;\arg\max_\theta\sum_{i&#x3D;1}^n\log p_\theta(\mathbf{x}^{(i)})<br>$$<br>现在，当我们更新方程，去优化编码器和解码器的过程，会涉及到隐编码向量:<br>$$<br>p_\theta(\mathbf{x}^{(i)})&#x3D;\int p_\theta(\mathbf{x}^{(i)}|\mathbf{z})p_\theta(\mathbf{z})d\mathbf{z}<br>$$<br>$p_\theta(\mathbf{x}^{(i)})$难以计算，因为找到 z 的所有值，然后把它们加起来的代价很大，也不太可能。为了缩小值空间以便更快的搜索，作者引入一个新的近似函数 $:q_{\phi}(z|x)$ ，来输出给定输入 x 的可能编码，其中 $\theta$ 是参数。（变分推断）</p>
+<p>其中z中的方差最好为1。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240311195947040.png"
+                      alt="image-20240311195947040"
+                ></p>
+<p> 现在这个结构看起来比较像Autoencoder了，首先，条件概率 $p_{\theta}(x|z)$ 定义为生成模型，和上面的解码器 $D_{\theta}(x|z)$ 类似，$p_{\theta}(x|z)$也是概率解码器。然后，近似函数 $q_{\phi}(z|x)$是概率编码器，和上面的 $E_{\phi}(z|x)$ 一样，都是编码器。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240311200035796.png"
+                      alt="image-20240311200035796"
+                ></p>
+<p><strong>前置知识很多不懂。。</strong></p>
+<h3 id="Deep-Gaussian-Processes"><a href="#Deep-Gaussian-Processes" class="headerlink" title="Deep Gaussian Processes"></a>Deep Gaussian Processes</h3><p>Deep Gaussian Processes（深度高斯过程，简称DGP）是一种扩展了传统高斯过程（Gaussian Processes，GP）到多层结构的模型。它是一种灵活的非参数贝叶斯方法，用于建模复杂的非线性关系，并提供了对预测的不确定性估计。</p>
+<blockquote>
+<p>简单理解即高斯过程-深度-通过先验推断后验-结果-不确定分析。</p>
+</blockquote>
+<ol>
+<li><strong>高斯过程（Gaussian Processes，GP）</strong>： 高斯过程是一种贝叶斯非参数方法，用于建模输入和输出之间的概率关系。在传统的高斯过程中，我们假设输出是由输入的高斯分布产生的，而且任意两个输出之间的关系也是由高斯分布描述的。</li>
+<li><strong>深度结构</strong>： Deep Gaussian Processes通过堆叠多个高斯过程来构建深度结构。每一层高斯过程的输出被视为下一层高斯过程的输入，从而形成多层级的模型结构。这种层级结构使得DGP能够对更复杂的非线性关系进行建模。</li>
+<li><strong>嵌套高斯过程</strong>： 在Deep Gaussian Processes中，每一层的高斯过程被称为嵌套高斯过程（Nested Gaussian Processes）。每个嵌套高斯过程可以被视为输入和输出之间的非线性映射，它将输入映射到一个潜在空间，并将潜在空间的表示映射回输出。</li>
+<li><strong>推断和训练</strong>： 在Deep Gaussian Processes中，我们通常使用变分推断或马尔可夫链蒙特卡罗（MCMC）等方法来进行模型的推断和训练。具体来说，我们通过最大化观测数据的边际似然来估计模型的参数，并通过变分推断来估计模型的后验分布。</li>
+<li><strong>不确定性估计</strong>： Deep Gaussian Processes能够提供对预测的不确定性估计。由于它是一种贝叶斯非参数方法，因此能够直接从后验分布中采样来估计预测的不确定性。这种不确定性估计对于决策制定、模型评估以及处理数据中的噪声和不确定性非常有用。</li>
+</ol>
+<blockquote>
+<p>chat出来大概是这样，论文中不是很理解，查阅资料也很少。大概理解为深层高斯分布吧。。</p>
+<p>感觉像是上述过程加深度而已..</p>
+</blockquote>
+<h3 id="Deep-Gaussian-Processes-1"><a href="#Deep-Gaussian-Processes-1" class="headerlink" title="Deep Gaussian Processes"></a>Deep Gaussian Processes</h3><p>这个不是很懂，意思应该是多层高斯过程，然后变分推理</p>
+<h3 id="Laplace-approximations"><a href="#Laplace-approximations" class="headerlink" title="Laplace approximations"></a>Laplace approximations</h3><p>Laplace逼近（Laplace approximation）是一种近似推断方法，通常用于贝叶斯统计中的概率密度函数的近似。它基于拉普拉斯方法（Laplace’s method），该方法是一种用于近似复杂积分的技术。</p>
+<p>在贝叶斯统计中，我们经常需要计算后验概率分布。但是，对于许多复杂的模型，后验分布的解析形式往往难以求得。在这种情况下，我们可以使用Laplace逼近来近似后验分布。</p>
+<p>Laplace逼近的思想是，在后验分布的最大后验估计（MAP）处，通过二阶泰勒级数展开来近似后验分布。具体步骤如下：</p>
+<ol>
+<li><strong>计算后验的最大后验估计（MAP）</strong>：首先，通过优化算法（如梯度下降）找到后验分布的最大值点，即MAP估计。</li>
+<li><strong>计算MAP处的梯度和海森矩阵</strong>：在MAP点处，计算后验概率分布的梯度和海森矩阵。</li>
+<li><strong>近似后验分布</strong>：利用MAP点处的梯度和海森矩阵，可以得到一个多元高斯分布来近似后验分布。这个高斯分布的均值是MAP点，协方差矩阵是海森矩阵的逆。</li>
+</ol>
+<p>Laplace逼近的优点包括：</p>
+<ul>
+<li><strong>简单性</strong>：相对于其他更复杂的近似推断方法，如变分推断或马尔科夫链蒙特卡罗（MCMC），Laplace逼近是一种简单且易于实现的方法。</li>
+<li><strong>高效性</strong>：在许多情况下，Laplace逼近可以提供良好的近似效果，并且计算速度较快。</li>
+<li><strong>解释性</strong>：由于Laplace逼近产生的近似后验分布是一个多元高斯分布，因此易于解释和理解。</li>
+</ul>
+<p>然而，Laplace逼近也有一些局限性：</p>
+<ul>
+<li><strong>仅适用于单峰分布</strong>：Laplace逼近通常假设后验分布是单峰的，即只有一个最大值。对于多峰分布，Laplace逼近可能会产生不准确的近似。</li>
+<li><strong>依赖于MAP估计</strong>：Laplace逼近的效果取决于MAP点的准确性。如果MAP点的估计不准确，那么得到的近似后验分布也可能不准确。</li>
+</ul>
+<p>总的来说，Laplace逼近是一种常用且有效的近似推断方法，特别适用于单峰分布的后验概率密度函数。</p>
+<blockquote>
+<p>查阅资料得知，Laplace逼近和MCMC以及KL散度等方法一样，基本都是对于后验函数的估计，优缺点明显。</p>
+</blockquote>
+<h2 id="强化学习的UQ"><a href="#强化学习的UQ" class="headerlink" title="强化学习的UQ"></a>强化学习的UQ</h2><p>这部分没有看。</p>
+<h2 id="ENSEMBLE-TECHNIQUES集成技巧"><a href="#ENSEMBLE-TECHNIQUES集成技巧" class="headerlink" title="ENSEMBLE TECHNIQUES集成技巧"></a>ENSEMBLE TECHNIQUES集成技巧</h2><p>An ensemble of models enhances predictive performance.</p>
+<p>Bayesian model averaging (BMA) believes that the true model reclines within the hypothesis class of the prior and executes soft model selection to locate the single best model within the hypothesis class. On the contrary, ensembles combine models to discover more powerful model; </p>
+<p>当不适用于hypothesis class</p>
+<p>每个模型<em>P</em>(<em>y</em>∣<em>x</em>,<em>θ</em>(<em>m</em>)) 显示了数据不确定性的不同估计。从后验中抽取的集成的“分歧”或扩展程度是由于预测的不确定性而发生的。让我们考虑一个集成 <em>P</em>(<em>y</em>∣<em>x</em>,<em>θ</em>(<em>m</em>))}，它产生了预期的行为集合，预期分布<em>P</em>(<em>y</em>∣<em>x</em>,<em>D</em>) 的熵可以被用作预测中的总不确定性的估计。集成的扩展度或“分歧”的度量，如互信息，可用于评估由于知识不确定性而导致的预测不确定性，如下所示：</p>
+<p>以上文字是在讨论机器学习模型中的不确定性，以及如何通过互信息（MI）分解总不确定性为预期数据不确定性和知识不确定性。以下是对文本的解释：</p>
+<ol>
+<li><strong>总不确定性的分解</strong>：<ul>
+<li>总不确定性是模型对于预测结果的不确定性的总体表示。</li>
+<li>这段文字提到了两种不确定性的来源：预期数据不确定性和知识不确定性。预期数据不确定性指的是模型对于新数据点的不确定性，而知识不确定性指的是模型本身对于数据的理解程度的不确定性。</li>
+</ul>
+</li>
+<li><strong>模型不确定性的表现</strong>：<ul>
+<li>当模型在数据集之外或类别重叠严重的区域时，总不确定性或者预测结果的熵会很高。这意味着模型对于这些区域的预测结果不确定性较大。</li>
+</ul>
+</li>
+<li><strong>模型分歧和不确定性</strong>：<ul>
+<li>如果模型之间存在分歧，那么预期熵（期望的不确定性）与个体模型预测结果的熵之间会有差异。这表明模型之间的差异会导致不同程度的预测不确定性。</li>
+</ul>
+</li>
+<li><strong>数据不确定性和知识不确定性</strong>：<ul>
+<li>在类别重叠的区域，数据不确定性更加显著，因为模型无法准确区分不同类别。</li>
+<li>在模型对于数据的理解程度较低的区域，知识不确定性更加显著，因为模型对于数据的解释能力有限。</li>
+</ul>
+</li>
+<li><strong>集合学习和不确定性</strong>：<ul>
+<li>在集成学习中，不仅要考虑集合中模型的多样性，还要考虑集合的平均值。集合可以被视为从输出分布中隐式采样的一组样本，这样可以更好地理解模型的不确定性。</li>
+</ul>
+</li>
+</ol>
+<h3 id="Deep-Ensemble"><a href="#Deep-Ensemble" class="headerlink" title="Deep Ensemble"></a>Deep Ensemble</h3><p>一些研究者应用了MCMC和BNNs，这些方法依赖于数据集的先验分布来解决不确定性预测问题。当这些方法应用于大型网络时，计算成本较高。模型集成是一种有效的技术，可以提高监督学习器的预测性能。深度集成被应用于在测试数据上获得更好的预测，并且在提供了OoD数据（与训练数据不统一）的情况下也产生模型不确定性估计。集成的成功取决于将个别几种类型的错误的预测组合起来产生的方差缩减。因此，通过利用大量基模型的大型集成，预测的改进被理解，并且这样的集成还会生成模型不确定性的分布估计。</p>
+<h3 id="Deep-Ensemble-Bayesian"><a href="#Deep-Ensemble-Bayesian" class="headerlink" title="Deep Ensemble Bayesian"></a>Deep Ensemble Bayesian</h3><p>所提出的集成方法采用了贝叶斯模型平均，其中考虑了每个单独模型的可靠性和不确定性。</p>
+<h3 id="Uncertainty-Quantification-in-Traditional-Machine-Learning-domain-using-Ensemble-Techniques"><a href="#Uncertainty-Quantification-in-Traditional-Machine-Learning-domain-using-Ensemble-Techniques" class="headerlink" title="Uncertainty Quantification in Traditional Machine Learning domain using Ensemble Techniques"></a>Uncertainty Quantification in Traditional Machine Learning domain using Ensemble Techniques</h3><p>略，传统机器学习的集成学习UQ。</p>
+<h2 id="FURTHER-STUDIES-OF-UQ-METHODS"><a href="#FURTHER-STUDIES-OF-UQ-METHODS" class="headerlink" title="FURTHER STUDIES OF UQ METHODS"></a>FURTHER STUDIES OF UQ METHODS</h2><p>OoD（Out-of-Distribution）是在机器学习和深度学习系统中常见的错误，当训练数据具有不同的分布时会出现？（AU）</p>
+<p>剩下杂七杂八的方法..</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>几种贝叶斯方法；</li>
+<li>集成学习理论；</li>
+<li>UQ介绍。。</li>
+</ul>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><ul>
+<li>如何集成应用；</li>
+<li>文章是否需要都看；</li>
+<li>未来规划？？</li>
+</ul>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> 论文阅读——A Review of Uncertainty Quantification in Deep Learning:Techniques, Applications and Challenges（不确定性分析）</li>
+        <li><strong>Author:</strong> 孙睿睿</li>
+        <li><strong>Created at
+                :</strong> 2024-03-09 15:35:32</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-03-12 21:54:04
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://redefine.ohevan.com/2024/03/09/A-Review-of-Uncertainty-Quantification-in-Deep-Learning-Techniques-Applications-and-Challenges/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7/">#不确定性</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/%E6%A8%A1%E5%9E%8B%E8%87%AA%E4%BF%A1/">#模型自信</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/03/08/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%942024-3-6-3-7%EF%BC%88%E4%BA%8C%E5%8F%89%E6%A0%91%EF%BC%89/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">刷题笔记——2024-3-6-3-7（二叉树）</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          recaptchaV3Key: "wasd",
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">论文阅读——A Review of Uncertainty Quantification in Deep Learning:Techniques, Applications and Challenges（不确定性分析）</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#A-Review-of-Uncertainty-Quantification-in-Deep-Learning-Techniques-Applications-and-Challenges"><span class="nav-text">A Review of Uncertainty Quantification in Deep Learning: Techniques, Applications and Challenges</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%E5%A4%A7%E7%BA%B2"><span class="nav-text">目标大纲</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#uncertainty-modeling"><span class="nav-text">uncertainty modeling</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E8%A7%A3%E5%86%B3%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E9%87%8F%E5%8C%96"><span class="nav-text">贝叶斯解决不确定性量化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Monte-Carlo-MC-dropout"><span class="nav-text">Monte Carlo (MC) dropout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Markov-chain-Monte-Carlo%EF%BC%88MCMC%EF%BC%89"><span class="nav-text">Markov chain Monte Carlo（MCMC）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E5%88%86%E6%8E%A8%E7%90%86Variational-Inference"><span class="nav-text">变分推理Variational Inference</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bayesian-Active-Learning-BAL"><span class="nav-text">Bayesian Active Learning (BAL)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bayes-by-Backprop-BBB"><span class="nav-text">Bayes by Backprop (BBB)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Variational-Autoencoders"><span class="nav-text">Variational Autoencoders</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deep-Gaussian-Processes"><span class="nav-text">Deep Gaussian Processes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deep-Gaussian-Processes-1"><span class="nav-text">Deep Gaussian Processes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Laplace-approximations"><span class="nav-text">Laplace approximations</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84UQ"><span class="nav-text">强化学习的UQ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ENSEMBLE-TECHNIQUES%E9%9B%86%E6%88%90%E6%8A%80%E5%B7%A7"><span class="nav-text">ENSEMBLE TECHNIQUES集成技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Deep-Ensemble"><span class="nav-text">Deep Ensemble</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deep-Ensemble-Bayesian"><span class="nav-text">Deep Ensemble Bayesian</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Uncertainty-Quantification-in-Traditional-Machine-Learning-domain-using-Ensemble-Techniques"><span class="nav-text">Uncertainty Quantification in Traditional Machine Learning domain using Ensemble Techniques</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FURTHER-STUDIES-OF-UQ-METHODS"><span class="nav-text">FURTHER STUDIES OF UQ METHODS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-text">问题</span></a></li></ol></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">孙睿睿</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        25 posts in total
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.1</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
