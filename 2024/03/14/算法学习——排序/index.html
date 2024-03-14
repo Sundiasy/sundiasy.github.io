@@ -13,27 +13,31 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://Sundiasy.github.io/2024/02/27/刷题笔记——旋转图像（矩阵）/"/>
+    <link rel="canonical" href="http://Sundiasy.github.io/2024/03/14/算法学习——排序/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="旋转矩阵题目给定一个 n × n 的二维矩阵 matrix 表示一个图像。请你将图像顺时针旋转 90 度。 你必须在** 原地 ** 旋转图像，这意味着你需要直接修改输入的二维矩阵。请不要 使用另一个矩阵来旋转图像。 示例 1：   输入：matrix &#x3D; [[1,2,3],[4,5,6],[7,8,9]] 输出：[[7,4,1],[8,5,2],[9,6,3]]  示例 2：   输入">
+        <meta name="description" content="排序 二分上课，背题，ac3遍。 快排分治   主要是第二步。  上述需要两个额外空间。 优美的方法做，双指针，i ，j 替换，继续遍历。 边界问题：尝试模板；不要推。  快排模板。 12345678910111213void quick_sort(int q[], int l, int r)&#123;    if (l &gt;&#x3D; r) return;    int i &#x3D; l - 1, j">
 <meta property="og:type" content="article">
-<meta property="og:title" content="刷题笔记——旋转图像（矩阵）">
-<meta property="og:url" content="http://sundiasy.github.io/2024/02/27/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%97%8B%E8%BD%AC%E5%9B%BE%E5%83%8F%EF%BC%88%E7%9F%A9%E9%98%B5%EF%BC%89/index.html">
+<meta property="og:title" content="算法学习——排序、二分">
+<meta property="og:url" content="http://sundiasy.github.io/2024/03/14/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E6%8E%92%E5%BA%8F/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="旋转矩阵题目给定一个 n × n 的二维矩阵 matrix 表示一个图像。请你将图像顺时针旋转 90 度。 你必须在** 原地 ** 旋转图像，这意味着你需要直接修改输入的二维矩阵。请不要 使用另一个矩阵来旋转图像。 示例 1：   输入：matrix &#x3D; [[1,2,3],[4,5,6],[7,8,9]] 输出：[[7,4,1],[8,5,2],[9,6,3]]  示例 2：   输入">
+<meta property="og:description" content="排序 二分上课，背题，ac3遍。 快排分治   主要是第二步。  上述需要两个额外空间。 优美的方法做，双指针，i ，j 替换，继续遍历。 边界问题：尝试模板；不要推。  快排模板。 12345678910111213void quick_sort(int q[], int l, int r)&#123;    if (l &gt;&#x3D; r) return;    int i &#x3D; l - 1, j">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="c:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240227114147492.png">
-<meta property="og:image" content="c:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240227114154660.png">
-<meta property="article:published_time" content="2024-02-27T03:29:03.000Z">
-<meta property="article:modified_time" content="2024-02-29T13:18:11.589Z">
+<meta property="og:image" content="c:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240314130122450.png">
+<meta property="og:image" content="c:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240314130157875.png">
+<meta property="og:image" content="c:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240314130251170.png">
+<meta property="og:image" content="c:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240314132313733.png">
+<meta property="og:image" content="c:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240314134054739.png">
+<meta property="og:image" content="c:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240314160339161.png">
+<meta property="article:published_time" content="2024-03-14T04:56:50.000Z">
+<meta property="article:modified_time" content="2024-03-14T13:41:31.837Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="模拟">
-<meta property="article:tag" content="矩阵">
+<meta property="article:tag" content="二分">
+<meta property="article:tag" content="排序">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240227114147492.png">
+<meta name="twitter:image" content="c:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240314130122450.png">
     
     
     <!--- Icon Part-->
@@ -45,7 +49,7 @@
     
     <title>
         
-            刷题笔记——旋转图像（矩阵） -
+            算法学习——排序、二分 -
         
         孙睿睿的博客站
     </title>
@@ -391,7 +395,7 @@
         <div class="article-title relative w-full">
             
                 <div class="w-full flex items-center pt-6 justify-start">
-                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">刷题笔记——旋转图像（矩阵）</h1>
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">算法学习——排序、二分</h1>
                 </div>
             
             </div>
@@ -412,15 +416,15 @@
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2024-02-27 11:29:03</span>
-        <span class="mobile">2024-02-27 11:29:03</span>
+        <span class="desktop">2024-03-14 12:56:50</span>
+        <span class="mobile">2024-03-14 12:56:50</span>
         <span class="hover-info">Created</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-02-29 21:18:11</span>
-            <span class="mobile">2024-02-29 21:18:11</span>
+            <span class="desktop">2024-03-14 21:41:31</span>
+            <span class="mobile">2024-03-14 21:41:31</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -434,7 +438,7 @@
                     
                         
                         <li>
-                            <a href="/categories/%E5%88%B7%E9%A2%98/">刷题</a>&nbsp;
+                            <a href="/categories/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/">算法学习</a>&nbsp;
                         </li>
                     
                     
@@ -448,11 +452,11 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/%E6%A8%A1%E6%8B%9F/">模拟</a>&nbsp;
+                        <a href="/tags/%E4%BA%8C%E5%88%86/">二分</a>&nbsp;
                     </li>
                 
                     <li>
-                        | <a href="/tags/%E7%9F%A9%E9%98%B5/">矩阵</a>&nbsp;
+                        | <a href="/tags/%E6%8E%92%E5%BA%8F/">排序</a>&nbsp;
                     </li>
                 
             </ul>
@@ -478,37 +482,71 @@
 
 
         <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-            <h1 id="旋转矩阵"><a href="#旋转矩阵" class="headerlink" title="旋转矩阵"></a>旋转矩阵</h1><h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给定一个 <em>n</em> × <em>n</em> 的二维矩阵 <code>matrix</code> 表示一个图像。请你将图像顺时针旋转 90 度。</p>
-<p>你必须在**<a class="link"   target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%8E%9F%E5%9C%B0%E7%AE%97%E6%B3%95" > 原地 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>** 旋转图像，这意味着你需要直接修改输入的二维矩阵。<strong>请不要</strong> 使用另一个矩阵来旋转图像。</p>
-<p><strong>示例 1：</strong></p>
+            <h1 id="排序-二分"><a href="#排序-二分" class="headerlink" title="排序 二分"></a>排序 二分</h1><p>上课，背题，ac3遍。</p>
+<h2 id="快排"><a href="#快排" class="headerlink" title="快排"></a>快排</h2><p>分治</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="C:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240227114147492.png"
-                      alt="image-20240227114147492"
+                     data-src="C:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240314130122450.png"
+                      alt="image-20240314130122450"
                 ></p>
-<blockquote>
-<p><strong>输入：</strong>matrix &#x3D; [[1,2,3],[4,5,6],[7,8,9]]</p>
-<p><strong>输出：</strong>[[7,4,1],[8,5,2],[9,6,3]]</p>
-</blockquote>
-<p><strong>示例 2：</strong></p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="C:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240227114154660.png"
-                      alt="image-20240227114154660"
+                     data-src="C:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240314130157875.png"
+                      alt="image-20240314130157875"
                 ></p>
-<blockquote>
-<p><strong>输入：</strong>matrix &#x3D; [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]</p>
-<p><strong>输出：</strong>[[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]</p>
-</blockquote>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>这道题和之前的移动数组位置的题目很相似，可以理解为一维变二维而已。</p>
-<p>具体还是是使用模拟的方法一步步模拟即可完成，难度一般。</p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>外层循环是一层层遍历，内层循环是对于行数字（如第一行进行遍历）。每次遍历将上下左右四个位置都处理完毕。</p>
-<p>代码实现如下：</p>
-<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">rotate</span><span class="params">(vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; matrix)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i =<span class="number">0</span>;i&lt;matrix.<span class="built_in">size</span>()/<span class="number">2</span>+<span class="number">1</span>;i++) <span class="comment">//i是层数</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j =i;j&lt;matrix[<span class="number">0</span>].<span class="built_in">size</span>()<span class="number">-1</span>-i;j++)<span class="comment">//层中遍历数</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="type">int</span> tm = matrix[j][matrix[<span class="number">0</span>].<span class="built_in">size</span>()<span class="number">-1</span>-i];<span class="comment">//存储每行最右边元素的值；</span></span><br><span class="line">                <span class="built_in">swap</span>(matrix[j][matrix[<span class="number">0</span>].<span class="built_in">size</span>()<span class="number">-1</span>-i],matrix[i][j]); <span class="comment">//交换第一列位置和最右边一列位置相同元素</span></span><br><span class="line">                <span class="type">int</span> te = matrix[matrix.<span class="built_in">size</span>()<span class="number">-1</span>-i][matrix[<span class="number">0</span>].<span class="built_in">size</span>()<span class="number">-1</span>-j]; <span class="comment">//存储下面一行的元素</span></span><br><span class="line">                <span class="built_in">swap</span>(tm,matrix[matrix.<span class="built_in">size</span>()<span class="number">-1</span>-i][matrix[<span class="number">0</span>].<span class="built_in">size</span>()<span class="number">-1</span>-j]); <span class="comment">//交换下面一行元素和最右边元素的值；</span></span><br><span class="line">                <span class="type">int</span> tp = matrix[matrix.<span class="built_in">size</span>()<span class="number">-1</span>-j][i];  <span class="comment">//存储下左元素的值</span></span><br><span class="line">                <span class="built_in">swap</span>( matrix[matrix.<span class="built_in">size</span>()<span class="number">-1</span>-j][i],te);<span class="comment">//交换下左边元素和右边下右边元素的值</span></span><br><span class="line">                <span class="built_in">swap</span>(tp,matrix[i][j]);<span class="comment">//交换最早的位置</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+<p>主要是第二步。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240314130251170.png"
+                      alt="image-20240314130251170"
+                ></p>
+<p>上述需要两个额外空间。</p>
+<p>优美的方法做，双指针，i ，j 替换，继续遍历。</p>
+<p><strong>边界问题</strong>：尝试模板；不要推。 </p>
+<p>快排模板。</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">quick_sort</span><span class="params">(<span class="type">int</span> q[], <span class="type">int</span> l, <span class="type">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (l &gt;= r) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> i = l - <span class="number">1</span>, j = r + <span class="number">1</span>, x = q[l + r &gt;&gt; <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">while</span> (i &lt; j)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">do</span> i ++ ; <span class="keyword">while</span> (q[i] &lt; x);</span><br><span class="line">        <span class="keyword">do</span> j -- ; <span class="keyword">while</span> (q[j] &gt; x);</span><br><span class="line">        <span class="keyword">if</span> (i &lt; j) <span class="built_in">swap</span>(q[i], q[j]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">quick_sort</span>(q, l, j), <span class="built_in">quick_sort</span>(q, j + <span class="number">1</span>, r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>矩阵题目主要还是模拟，题目难度不难，主要是模拟题目注释写好，调试认真即可。</p>
+<h2 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h2><p>分治</p>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240314132313733.png"
+                      alt="image-20240314132313733" style="zoom:50%;" 
+                >
+
+<p>稳定：原序列两数字相同，如果位置不改变是稳定的。</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">merge_sort</span><span class="params">(<span class="type">int</span> q[], <span class="type">int</span> l, <span class="type">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (l &gt;= r) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> mid = l + r &gt;&gt; <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">merge_sort</span>(q, l, mid);</span><br><span class="line">    <span class="built_in">merge_sort</span>(q, mid + <span class="number">1</span>, r);</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> k = <span class="number">0</span>, i = l, j = mid + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt;= mid &amp;&amp; j &lt;= r)</span><br><span class="line">        <span class="keyword">if</span> (q[i] &lt;= q[j]) tmp[k ++ ] = q[i ++ ];</span><br><span class="line">        <span class="keyword">else</span> tmp[k ++ ] = q[j ++ ];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (i &lt;= mid) tmp[k ++ ] = q[i ++ ];</span><br><span class="line">    <span class="keyword">while</span> (j &lt;= r) tmp[k ++ ] = q[j ++ ];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (i = l, j = <span class="number">0</span>; i &lt;= r; i ++, j ++ ) q[i] = tmp[j];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h2 id="二分"><a href="#二分" class="headerlink" title="二分"></a>二分</h2><p><strong>有单调性一定可以二分</strong>，<strong>二分不一定一定要单调性</strong>。 </p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240314134054739.png"
+                      alt="image-20240314134054739"
+                ></p>
+<p>先写check函数。在想如何更新区间，<strong>然后看模板</strong>。 l &#x3D; mid 要补l+1，r&#x3D;mid不用补。</p>
+<p>如果l&#x3D;mid else r&#x3D;mid-1； r &#x3D; mid；else l&#x3D;mid+1；</p>
+<p>关于补上加一，因为除法是向下取整，如果不加一如果两个数字一个l一个r，那么会得到l&#x3D;l死循环，不会让l&#x3D;r；</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\sun\AppData\Roaming\Typora\typora-user-images\image-20240314160339161.png"
+                      alt="image-20240314160339161"
+                ></p>
+<p>二分后面可以得到一个值，可能不是我们想要的，可以增加一个判断，<strong>没有的话得到的是从左往右第一个满足的数字</strong>。</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">check</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;<span class="comment">/* ... */</span>&#125; <span class="comment">// 检查x是否满足某种性质</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 区间[l, r]被划分成[l, mid]和[mid + 1, r]时使用：</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">bsearch_1</span><span class="params">(<span class="type">int</span> l, <span class="type">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (l &lt; r)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> mid = l + r &gt;&gt; <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">check</span>(mid)) r = mid;    <span class="comment">// check()判断mid是否满足性质</span></span><br><span class="line">        <span class="keyword">else</span> l = mid + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 区间[l, r]被划分成[l, mid - 1]和[mid, r]时使用：  //边界是要寻找的值sr</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">bsearch_2</span><span class="params">(<span class="type">int</span> l, <span class="type">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (l &lt; r)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> mid = l + r + <span class="number">1</span> &gt;&gt; <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">check</span>(mid)) l = mid;</span><br><span class="line">        <span class="keyword">else</span> r = mid - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="浮点数二分"><a href="#浮点数二分" class="headerlink" title="浮点数二分"></a>浮点数二分</h2><p>没有整除，所以可以直接除得到就行。 1e-6</p>
+<p>区间长度足够小认为为一个数字。</p>
+<p><strong>不用处理边界。</strong></p>
+<p>保留四位 1e-6，1e-7一定要多二。</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">check</span><span class="params">(<span class="type">double</span> x)</span> </span>&#123;<span class="comment">/* ... */</span>&#125; <span class="comment">// 检查x是否满足某种性质</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">double</span> <span class="title">bsearch_3</span><span class="params">(<span class="type">double</span> l, <span class="type">double</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">double</span> eps = <span class="number">1e-6</span>;   <span class="comment">// eps 表示精度，取决于题目对精度的要求</span></span><br><span class="line">    <span class="keyword">while</span> (r - l &gt; eps)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">double</span> mid = (l + r) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">check</span>(mid)) r = mid;</span><br><span class="line">        <span class="keyword">else</span> l = mid;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
 
         </div>
 
@@ -516,18 +554,18 @@
             <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> 刷题笔记——旋转图像（矩阵）</li>
+        <li><strong>Title:</strong> 算法学习——排序、二分</li>
         <li><strong>Author:</strong> 孙睿睿</li>
         <li><strong>Created at
-                :</strong> 2024-02-27 11:29:03</li>
+                :</strong> 2024-03-14 12:56:50</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-02-29 21:18:11
+                    :</strong> 2024-03-14 21:41:31
             </li>
         
         <li>
-            <strong>Link:</strong> https://redefine.ohevan.com/2024/02/27/刷题笔记——旋转图像（矩阵）/
+            <strong>Link:</strong> https://redefine.ohevan.com/2024/03/14/算法学习——排序/
         </li>
         <li>
             <strong>
@@ -549,11 +587,11 @@
             <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/%E6%A8%A1%E6%8B%9F/">#模拟</a>&nbsp;
+                        <a href="/tags/%E4%BA%8C%E5%88%86/">#二分</a>&nbsp;
                     </li>
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/%E7%9F%A9%E9%98%B5/">#矩阵</a>&nbsp;
+                        <a href="/tags/%E6%8E%92%E5%BA%8F/">#排序</a>&nbsp;
                     </li>
                 
             </ul>
@@ -564,29 +602,14 @@
         
             <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
                 
-                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-                        <a class="prev"
-                        rel="prev"
-                        href="/2024/02/29/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%90%9C%E7%B4%A2%E4%BA%8C%E7%BB%B4%E7%9F%A9%E9%98%B5%EF%BC%88%E7%9F%A9%E9%98%B5%EF%BC%89/"
-                        >
-                            <span class="left arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </span>
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">刷题笔记——搜索二维矩阵（矩阵）</span>
-                                <span class="post-nav-item">Prev posts</span>
-                            </span>
-                        </a>
-                    </div>
-                
                 
                     <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
                         <a class="next"
                         rel="next"
-                        href="/2024/02/27/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E8%9E%BA%E6%97%8B%E7%9F%A9%E9%98%B5%EF%BC%88%E7%9F%A9%E9%98%B5%EF%BC%89/"
+                        href="/2024/03/09/A-Review-of-Uncertainty-Quantification-in-Deep-Learning-Techniques-Applications-and-Challenges/"
                         >
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">刷题笔记——螺旋矩阵（矩阵）</span>
+                                <span class="post-nav-title-item">论文阅读——A Review of Uncertainty Quantification in Deep Learning:Techniques, Applications and Challenges（不确定性分析）</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">
@@ -649,8 +672,8 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">刷题笔记——旋转图像（矩阵）</div>
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5"><span class="nav-text">旋转矩阵</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-text">题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol>
+        <div class="page-title">算法学习——排序、二分</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F-%E4%BA%8C%E5%88%86"><span class="nav-text">排序 二分</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E6%8E%92"><span class="nav-text">快排</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="nav-text">归并排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%88%86"><span class="nav-text">二分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E6%95%B0%E4%BA%8C%E5%88%86"><span class="nav-text">浮点数二分</span></a></li></ol></li></ol>
 
     </div>
 </div>
