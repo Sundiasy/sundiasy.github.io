@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="孙睿睿">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://Sundiasy.github.io/2024/05/28/模型校准实现——阶段记录/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="[toc] 假新闻模型校准假新闻模型校准，主要是对几种图神经网络在假新闻检测任务的实现方法的校准，主要复现BIGCN（2020）、GACL（2022）以及DDGCN（2022）3种模型。图神经网络可以聚合更多联系信息，同时模型训练所需计算量小，训练成本低，准确率高，可以广泛应用于假新闻校准领域。 目前没有人对假新闻检测任务的模型进行校准。假新闻检测任务本身需要高度符合结果的置信度支持，为使用者提供">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模型校准实现——阶段记录">
+<meta property="og:url" content="http://sundiasy.github.io/2024/05/28/%E6%A8%A1%E5%9E%8B%E6%A0%A1%E5%87%86%E5%AE%9E%E7%8E%B0%E2%80%94%E2%80%94%E9%98%B6%E6%AE%B5%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="[toc] 假新闻模型校准假新闻模型校准，主要是对几种图神经网络在假新闻检测任务的实现方法的校准，主要复现BIGCN（2020）、GACL（2022）以及DDGCN（2022）3种模型。图神经网络可以聚合更多联系信息，同时模型训练所需计算量小，训练成本低，准确率高，可以广泛应用于假新闻校准领域。 目前没有人对假新闻检测任务的模型进行校准。假新闻检测任务本身需要高度符合结果的置信度支持，为使用者提供">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="d:\grade3\myblog\source_posts\%E6%A8%A1%E5%9E%8B%E6%A0%A1%E5%87%86%E5%AE%9E%E7%8E%B0%E2%80%94%E2%80%94%E9%98%B6%E6%AE%B5%E8%AE%B0%E5%BD%95\image-20240530114630492.png">
+<meta property="og:image" content="d:\grade3\myblog\source_posts\%E6%A8%A1%E5%9E%8B%E6%A0%A1%E5%87%86%E5%AE%9E%E7%8E%B0%E2%80%94%E2%80%94%E9%98%B6%E6%AE%B5%E8%AE%B0%E5%BD%95\image-20240530154156453.png">
+<meta property="og:image" content="d:\grade3\myblog\source_posts\%E6%A8%A1%E5%9E%8B%E6%A0%A1%E5%87%86%E5%AE%9E%E7%8E%B0%E2%80%94%E2%80%94%E9%98%B6%E6%AE%B5%E8%AE%B0%E5%BD%95\image-20240530154410485.png">
+<meta property="og:image" content="d:\grade3\myblog\source_posts\%E6%A8%A1%E5%9E%8B%E6%A0%A1%E5%87%86%E5%AE%9E%E7%8E%B0%E2%80%94%E2%80%94%E9%98%B6%E6%AE%B5%E8%AE%B0%E5%BD%95\image-20240530131308380.png">
+<meta property="og:image" content="d:\grade3\myblog\source_posts\%E6%A8%A1%E5%9E%8B%E6%A0%A1%E5%87%86%E5%AE%9E%E7%8E%B0%E2%80%94%E2%80%94%E9%98%B6%E6%AE%B5%E8%AE%B0%E5%BD%95\image-20240530131619508.png">
+<meta property="og:image" content="d:\grade3\myblog\source_posts\%E6%A8%A1%E5%9E%8B%E6%A0%A1%E5%87%86%E5%AE%9E%E7%8E%B0%E2%80%94%E2%80%94%E9%98%B6%E6%AE%B5%E8%AE%B0%E5%BD%95\image-20240530131937421.png">
+<meta property="og:image" content="d:\grade3\myblog\source_posts\%E6%A8%A1%E5%9E%8B%E6%A0%A1%E5%87%86%E5%AE%9E%E7%8E%B0%E2%80%94%E2%80%94%E9%98%B6%E6%AE%B5%E8%AE%B0%E5%BD%95\image-20240530143214782.png">
+<meta property="og:image" content="d:\grade3\myblog\source_posts\%E6%A8%A1%E5%9E%8B%E6%A0%A1%E5%87%86%E5%AE%9E%E7%8E%B0%E2%80%94%E2%80%94%E9%98%B6%E6%AE%B5%E8%AE%B0%E5%BD%95\%E7%BB%93%E6%9E%9C.jpeg">
+<meta property="og:image" content="d:\grade3\myblog\source_posts\%E6%A8%A1%E5%9E%8B%E6%A0%A1%E5%87%86%E5%AE%9E%E7%8E%B0%E2%80%94%E2%80%94%E9%98%B6%E6%AE%B5%E8%AE%B0%E5%BD%95\gacl.jpeg">
+<meta property="og:image" content="d:\grade3\myblog\source_posts\%E6%A8%A1%E5%9E%8B%E6%A0%A1%E5%87%86%E5%AE%9E%E7%8E%B0%E2%80%94%E2%80%94%E9%98%B6%E6%AE%B5%E8%AE%B0%E5%BD%95\image-20240528204706860.png">
+<meta property="article:published_time" content="2024-05-28T11:59:20.000Z">
+<meta property="article:modified_time" content="2024-05-30T08:24:32.313Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="BIGCN">
+<meta property="article:tag" content="GACL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:\grade3\myblog\source_posts\%E6%A8%A1%E5%9E%8B%E6%A0%A1%E5%87%86%E5%AE%9E%E7%8E%B0%E2%80%94%E2%80%94%E9%98%B6%E6%AE%B5%E8%AE%B0%E5%BD%95\image-20240530114630492.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            模型校准实现——阶段记录 -
+        
+        孙睿睿的博客站
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+        <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    
+<script src="/js/libs/anime.min.js"></script>
+
+    <h1 class="ml13">
+        孙睿睿的博客站
+    </h1>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+
+        anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [100,0],
+                translateZ: 0,
+                opacity: [0,1],
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i
+            }).add({
+            targets: '.ml13 .letter',
+            translateY: [0,-100],
+            opacity: [1,0],
+            easing: "easeInExpo",
+            duration: 1200,
+            delay: (el, i) => 100 + 30 * i
+        });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            hidePreloaderAfterTimeout(1000); // Hide after 1000 milliseconds once the window has loaded
+        });
+
+        // Backup failsafe: Hide preloader after a maximum of 5000 milliseconds, regardless of the window load event
+        hidePreloaderAfterTimeout(5000);
+
+        function hidePreloaderAfterTimeout(delay) {
+            setTimeout(function () {
+                var preloader = document.querySelector('.preloader');
+                preloader.style.opacity = '0';
+                setTimeout(function () {
+                    preloader.style.display = 'none';
+                }, 200);
+            }, delay);
+        }
+    </script>
+</div>
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"sundiasy.github.io","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"5rem","h2":"4rem","h3":"2.8rem","h4":"2.5rem","h5":"2.2rem","h6":"2rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"孙睿睿的博客站","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.1","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                孙睿睿的博客站
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">34</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">6</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">36</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">模型校准实现——阶段记录</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/redefine-avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">孙睿睿</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-05-28 19:59:20</span>
+        <span class="mobile">2024-05-28 19:59:20</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-05-30 16:24:32</span>
+            <span class="mobile">2024-05-30 16:24:32</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E6%A8%A1%E5%9E%8B%E6%A0%A1%E5%87%86/">模型校准</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/BIGCN/">BIGCN</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/GACL/">GACL</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <p>[toc]</p>
+<h1 id="假新闻模型校准"><a href="#假新闻模型校准" class="headerlink" title="假新闻模型校准"></a><strong>假新闻模型校准</strong></h1><p>假新闻模型校准，主要是对几种图神经网络在假新闻检测任务的实现方法的校准，主要复现BIGCN（2020）、GACL（2022）以及DDGCN（2022）3种模型。图神经网络可以聚合更多联系信息，同时模型训练所需计算量小，训练成本低，准确率高，可以广泛应用于假新闻校准领域。</p>
+<p>目前没有人对假新闻检测任务的模型进行校准。假新闻检测任务本身需要高度符合结果的置信度支持，为使用者提供有效的信息。基于此契机，我首先复现了几种主流的图神经网络SOTA方法，对其不确定性进行量化。在得到几种模型的不确定性指标后，使用Temperature Scaling方法，构建TS-BIGCN、TS-GACL以及TS-DDGCN模型，对其置信度进行校准。为构建可信的深度学习模型贡献了我们的一部分力量。</p>
+<p>本文档分为三大部分，第一部分是模型的复现，第二部分是模型不确定性量化，第三部分是校准模型构建。</p>
+<h2 id="模型复现"><a href="#模型复现" class="headerlink" title="模型复现"></a>模型复现</h2><h3 id="BIGCN介绍"><a href="#BIGCN介绍" class="headerlink" title="BIGCN介绍"></a>BIGCN介绍</h3><p>BIGCN是一个双向传播的图神经网络。相较于传统的图卷积神经网络，BIGCN通过转置的方法，基于有向图，分别从自上到下和自下到上通过图卷积的方法，分别聚合根节点对评论节点的联系以及评论节点对根节点的关系，进而完成多分类问题。</p>
+<p>步骤为：</p>
+<ol>
+<li>自上到下、自下到上图临界矩阵构建（临界矩阵转置）</li>
+<li>根节点增强（根节点concat第一层输出）</li>
+<li>两层图卷积训练（$H^{(l+1)}&#x3D;\sigma{\left(\tilde{D}^{-\frac12}\tilde{A}\tilde{D}^{-\frac12}H^{(l)}W^{(l)}\right)}$）</li>
+<li>激活函数</li>
+<li>全连接层输出</li>
+</ol>
+<p><img lazyload src="/images/loading.svg" data-src="D:\grade3\myblog\source_posts\模型校准实现——阶段记录\image-20240530114630492.png" alt="image-20240530114630492"></p>
+<h3 id="BIGCN表现"><a href="#BIGCN表现" class="headerlink" title="BIGCN表现"></a>BIGCN表现</h3><p>我对BIGCN进行复现，共测试5个iteration，每轮分五折测试。训练集最后测试准确率高达100%</p>
+<p><img lazyload src="/images/loading.svg" data-src="D:\grade3\myblog\source_posts\模型校准实现——阶段记录\image-20240530154156453.png" alt="image-20240530154156453"><strong>这篇论文中是用测试集当作早停，没有出现验证集。</strong>最高测试集正确率可达84%，不能达到论文中SOTA。查询Github的issue，发现网友反映和我的ACC结果相似。</p>
+<p>我最后一次跑出的结果为Total_Test_Accuracy: 0.8244|NR F1: 0.7809|FR F1: 0.8278|TR F1: 0.8902|UR F1: 0.7880。曾跑出过84%以上的准确率，查看issue如下，和我的结果类似：</p>
+<p><img lazyload src="/images/loading.svg" data-src="D:\grade3\myblog\source_posts\模型校准实现——阶段记录\image-20240530154410485.png" alt="image-20240530154410485"></p>
+<p>论文复现有早停策略，故未出现过拟合。</p>
+<h3 id="GACL介绍"><a href="#GACL介绍" class="headerlink" title="GACL介绍"></a>GACL介绍</h3><p>GACL在损失中添加了对比学习损失，其对比损失的计算是通过余弦相似度来计算，具体过程方法如下：<br>$$<br>对比学习损失：\mathcal{L}<em>{sup}&#x3D;-\sum</em>{k\in K}log\left{\frac{1}{|P(k)|}\sum_{p\in P(k)}\frac{exp(sim(m_{k},m_{p})\tau)}{\sum_{a\in A(k)}exp(sim(m_{k},m_{a})\tau)}\right}<br>$$</p>
+<p>$$<br>余弦相似度：sim(m_k,m_p)&#x3D;m_k^Tm_p&#x2F;|m_k||m_p|<br>$$</p>
+<p>流程如下：</p>
+<ol>
+<li>BERT提取特征作为节点特征</li>
+<li>GCN训练</li>
+<li>训练时引入对比学习损失，与交叉熵相加</li>
+<li>分类</li>
+</ol>
+<h3 id="GACL表现"><a href="#GACL表现" class="headerlink" title="GACL表现"></a>GACL表现</h3><p><strong>测试集</strong>结果如下，平均准确率为88.94%，距离实验结果差1.1%，准确率误差可接受：</p>
+<p><img lazyload src="/images/loading.svg" data-src="D:\grade3\myblog\source_posts\模型校准实现——阶段记录\image-20240530131308380.png" alt="image-20240530131308380"></p>
+<p><strong>训练集</strong>最后一个epoch的结果，训练集准确率可达95%以上：</p>
+<p><img lazyload src="/images/loading.svg" data-src="D:\grade3\myblog\source_posts\模型校准实现——阶段记录\image-20240530131619508.png" alt="image-20240530131619508"></p>
+<p>最后一个<strong>验证集</strong>结果，验证集结果为86.35%（其中一折），早停取最高未出现过拟合：</p>
+<p><img lazyload src="/images/loading.svg" data-src="D:\grade3\myblog\source_posts\模型校准实现——阶段记录\image-20240530131937421.png" alt="image-20240530131937421"></p>
+<p>值得说明的是，GACL和BIGCN都直接使用<strong>测试集作为验证集来实现早停，实现不规范</strong>，但是原文及代码都是这样实现的。</p>
+<p>可以看到训练集和测试集的趋势都是增加的，所以没有出现过拟合。</p>
+<h3 id="DDGCN表现"><a href="#DDGCN表现" class="headerlink" title="DDGCN表现"></a>DDGCN表现</h3><p>DDGCN与之前的两个模型不同，他划分了7：1：2的训练集、验证集与测试集的分布。对于训练集来说，由于模型较为复杂，我划分batch_size为32，最后一轮的训练集准确率如下图所示，训练batch_size的正确率基本都可以达到100%：</p>
+<p><img lazyload src="/images/loading.svg" data-src="D:\grade3\myblog\source_posts\模型校准实现——阶段记录\image-20240530143214782.png" alt="image-20240530143214782"></p>
+<p>同样在训练中，模型引入了早停机制避免过拟合，验证集正确率最高时早停，此时测试集的正确率为84.35%，与论文中的结果差1.3%，同样可以接受。</p>
+<p>各项指标如下</p>
+<table>
+<thead>
+<tr>
+<th align="center">acc:</th>
+<th align="center">prec:</th>
+<th align="center">rec:</th>
+<th align="center">f1:</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0.84347</td>
+<td align="center">0.84058</td>
+<td align="center">0.81576</td>
+<td align="center">0.82798</td>
+</tr>
+</tbody></table>
+<h2 id="不确定性量化"><a href="#不确定性量化" class="headerlink" title="不确定性量化"></a>不确定性量化</h2><p>我是用两种方法对模型的不确定性进行一定程度的量化</p>
+<h3 id="Expected-Calibration-Error"><a href="#Expected-Calibration-Error" class="headerlink" title="Expected Calibration Error"></a>Expected Calibration Error</h3><p>使用ECE对模型的准确率和置信度进行一个指标描述，初始时，计算BIGCN、GACL以及DDGCN的ECE值如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th align="center">BIGCN</th>
+<th align="center">GACL</th>
+<th align="center">DDGCN</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0.053</td>
+<td align="center">0.091</td>
+<td align="center">0.0896</td>
+</tr>
+</tbody></table>
+<p>三者在置信度和准确率之间都存在一定程度上的校准误差。</p>
+<h3 id="MC-Dropout"><a href="#MC-Dropout" class="headerlink" title="MC-Dropout"></a>MC-Dropout</h3><p>使用随机的抛弃GCN的边，在验证时多次预测，使用方差$\sigma$来估算模型的不确定性。若模型可信，多次预测结果的方差应该较小，若方差较大可认为预测结果具有不确定性。</p>
+<h2 id="模型校准"><a href="#模型校准" class="headerlink" title="模型校准"></a>模型校准</h2><p>近期，我使用temperature scaling的方法，实现了对BIGCN、DDGCN以及GACL三种baseline模型的校准。具体来说，在模型训练完成后，将会在进行soft-max或sigmoid前输出logits，我对每一个logits进行了温度压缩。</p>
+<h3 id="压缩原理"><a href="#压缩原理" class="headerlink" title="压缩原理"></a>压缩原理</h3><p>简单来说，在多分类或二分类模型的最后一层，需要使用soft-max或者sigmoid输出模型的置信度。其中，$\sigma$是最后一层输出confidence的函数（soft-max或sigmoid），在输出confidence前，对logits除以一个$T$超参数，通过优化超参数$T$，以达到最小ECE为目标。scaling方法在不影响模型结构的情况下，实现了对模型confidence的校准，通过一种非线性变化，使模型的ECE达到我们想看到的结果。<br>$$<br>\hat{q}<em>i&#x3D;\max_k\sigma</em>{\mathrm{SM}}(\mathbf{z}_i&#x2F;T)^{(k)}<br>$$</p>
+<h3 id="TS-BIGCN实现"><a href="#TS-BIGCN实现" class="headerlink" title="TS-BIGCN实现"></a>TS-BIGCN实现</h3><p>BIGCN模型的最后一层输出是log-softmax，即对logits里面的每一个元素都进行softmax后再取对数。而soft-max原理的输出公式为$\frac{e^{z_i}}{\sum_je^{z_j}}$，取对数后的前一项里有logits $z_i$的信息，后面减去的元素$ln(\sum_je^{z_j})$对于每一个logits元素都是相同的，所以可以近似看作是一种线性变换。</p>
+<p>基于上面的分析，我直接将log-softmax层输出的结果看作logits $z_i$，直接对此$z_i$进行温度缩放，即没有改变原模型的结构，对其进行了温度缩放。</p>
+<h3 id="TS-GACL实现"><a href="#TS-GACL实现" class="headerlink" title="TS-GACL实现"></a>TS-GACL实现</h3><p>GACL与BIGCN类似，最后一层都是log-softmax，于是处理方法与BIGCN相同。</p>
+<h3 id="TS-DDGCN实现"><a href="#TS-DDGCN实现" class="headerlink" title="TS-DDGCN实现"></a>TS-DDGCN实现</h3><p>DDGCN选择的数据集为pheme，此数据集的新闻label只有rumor和non-rumor之分，是二分类问题。因此，模型在最后一层使用sigmoid输出最终的confidence。</p>
+<p>对于此，我使用逻辑回归的逆过程，对输出的概率$p$，进行线性变化并取对数，处理过程如下：<br>$$<br>\ln\left(\frac{p(y&#x3D;1)}{1-p(y&#x3D;1)}\right)<br>$$<br>这样对每一个logit里面的元素都取一遍，得到了原始的logit $z_i$，之后再使用temperature scaling的原理进行压缩。</p>
+<h3 id="训练过程"><a href="#训练过程" class="headerlink" title="训练过程"></a>训练过程</h3><p>主要是对超参数的训练，我使用网格搜索的方法，设置$T$的范围从0.5-3.5，以0.001的step进行网格搜索，可以找到最优结果（整体单调，不用过大范围）。</p>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p>我将训练前的ECE和训练后的ECE写入文件中，训练五轮取平均。最后写了一个读文件计算均值的脚本，得到所有ECE前后对比，结果如下：</p>
+<p>BIGCN：</p>
+<p><img lazyload src="/images/loading.svg" data-src="D:\grade3\myblog\source_posts\模型校准实现——阶段记录\结果.jpeg" alt="img"></p>
+<p>GACL：</p>
+<p><img lazyload src="/images/loading.svg" data-src="D:\grade3\myblog\source_posts\模型校准实现——阶段记录\gacl.jpeg" alt="img"></p>
+<p>DDGCN：</p>
+<p><img lazyload src="/images/loading.svg" data-src="D:\grade3\myblog\source_posts\模型校准实现——阶段记录\image-20240528204706860.png" alt="image-20240528204706860"></p>
+<p>结果显示，</p>
+<ul>
+<li>BIGCN的ECE从0.053降至0.037。</li>
+<li>GACL的ECE从0.091降至0.066。</li>
+<li>DDGCN的ECE从0.0896降至0.0206。</li>
+</ul>
+<p>BIGCN的ECE达到最小时，temperature在[0.6-1.5]之间浮动。</p>
+<p>DDGCN在ECE达到最小时，temperature在1.5左右（ECE本身较大）。</p>
+<p>GACL在ECE达到最小时，temperature在[0.5-1]之间。</p>
+<p>expected calibration error降低效果显著，稳定降低2%-3%。</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> 模型校准实现——阶段记录</li>
+        <li><strong>Author:</strong> 孙睿睿</li>
+        <li><strong>Created at
+                :</strong> 2024-05-28 19:59:20</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-05-30 16:24:32
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://redefine.ohevan.com/2024/05/28/模型校准实现——阶段记录/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/BIGCN/">#BIGCN</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/GACL/">#GACL</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/06/12/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E2%80%94%E2%80%94Spatial-Heterophily-Aware-Graph-Neural-Networks/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">论文阅读——Spatial Heterophily Aware Graph Neural Networks</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/04/27/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">数据结构</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          recaptchaV3Key: "wasd",
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">模型校准实现——阶段记录</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%81%87%E6%96%B0%E9%97%BB%E6%A8%A1%E5%9E%8B%E6%A0%A1%E5%87%86"><span class="nav-text">假新闻模型校准</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%8E%B0"><span class="nav-text">模型复现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BIGCN%E4%BB%8B%E7%BB%8D"><span class="nav-text">BIGCN介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BIGCN%E8%A1%A8%E7%8E%B0"><span class="nav-text">BIGCN表现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GACL%E4%BB%8B%E7%BB%8D"><span class="nav-text">GACL介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GACL%E8%A1%A8%E7%8E%B0"><span class="nav-text">GACL表现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DDGCN%E8%A1%A8%E7%8E%B0"><span class="nav-text">DDGCN表现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E9%87%8F%E5%8C%96"><span class="nav-text">不确定性量化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Expected-Calibration-Error"><span class="nav-text">Expected Calibration Error</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MC-Dropout"><span class="nav-text">MC-Dropout</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%A0%A1%E5%87%86"><span class="nav-text">模型校准</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%8B%E7%BC%A9%E5%8E%9F%E7%90%86"><span class="nav-text">压缩原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TS-BIGCN%E5%AE%9E%E7%8E%B0"><span class="nav-text">TS-BIGCN实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TS-GACL%E5%AE%9E%E7%8E%B0"><span class="nav-text">TS-GACL实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TS-DDGCN%E5%AE%9E%E7%8E%B0"><span class="nav-text">TS-DDGCN实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B"><span class="nav-text">训练过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C"><span class="nav-text">结果</span></a></li></ol></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">孙睿睿</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        36 posts in total
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.1</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
