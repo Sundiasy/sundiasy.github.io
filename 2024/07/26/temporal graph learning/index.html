@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="孙睿睿">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://Sundiasy.github.io/2024/07/26/temporal graph learning/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="大四研究计划与时序图调研[toc]    入学前研究计划​        未来，我希望展开对复杂网络与图神经网络结合方向工作的研究，因此，我的研究计划主要包括基础巩固方面和研究工作方面。研究生开学前，我希望可以进一步筑牢基础，同时在过程中完成舆情早期预测的工作。 ​        具体来说，在基础巩固方面，我计划进一步熟悉Pytorch框架，熟悉DGL(Deep Graph Library) 库的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://sundiasy.github.io/2024/07/26/temporal%20graph%20learning/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="大四研究计划与时序图调研[toc]    入学前研究计划​        未来，我希望展开对复杂网络与图神经网络结合方向工作的研究，因此，我的研究计划主要包括基础巩固方面和研究工作方面。研究生开学前，我希望可以进一步筑牢基础，同时在过程中完成舆情早期预测的工作。 ​        具体来说，在基础巩固方面，我计划进一步熟悉Pytorch框架，熟悉DGL(Deep Graph Library) 库的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:\Users\sun\Desktop\temporal graph learning\image-20240729170712864.png">
+<meta property="og:image" content="c:\Users\sun\Desktop\temporal graph learning\image-20240803165847674.png">
+<meta property="og:image" content="c:\Users\sun\Desktop\temporal graph learning\image-20240818190607249.png">
+<meta property="article:published_time" content="2024-07-26T02:43:23.343Z">
+<meta property="article:modified_time" content="2024-08-18T11:33:16.531Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:\Users\sun\Desktop\temporal graph learning\image-20240729170712864.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+        孙睿睿的博客站
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+        <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    
+<script src="/js/libs/anime.min.js"></script>
+
+    <h1 class="ml13">
+        孙睿睿的博客站
+    </h1>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+
+        anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [100,0],
+                translateZ: 0,
+                opacity: [0,1],
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i
+            }).add({
+            targets: '.ml13 .letter',
+            translateY: [0,-100],
+            opacity: [1,0],
+            easing: "easeInExpo",
+            duration: 1200,
+            delay: (el, i) => 100 + 30 * i
+        });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            hidePreloaderAfterTimeout(1000); // Hide after 1000 milliseconds once the window has loaded
+        });
+
+        // Backup failsafe: Hide preloader after a maximum of 5000 milliseconds, regardless of the window load event
+        hidePreloaderAfterTimeout(5000);
+
+        function hidePreloaderAfterTimeout(delay) {
+            setTimeout(function () {
+                var preloader = document.querySelector('.preloader');
+                preloader.style.opacity = '0';
+                setTimeout(function () {
+                    preloader.style.display = 'none';
+                }, 200);
+            }, delay);
+        }
+    </script>
+</div>
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"sundiasy.github.io","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"5rem","h2":"4rem","h3":"2.8rem","h4":"2.5rem","h5":"2.2rem","h6":"2rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"孙睿睿的博客站","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.1","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                孙睿睿的博客站
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">43</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">6</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">45</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3"></h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/redefine-avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">孙睿睿</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-07-26 10:43:23</span>
+        <span class="mobile">2024-07-26 10:43:23</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-08-18 19:33:16</span>
+            <span class="mobile">2024-08-18 19:33:16</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1 id="大四研究计划与时序图调研"><a href="#大四研究计划与时序图调研" class="headerlink" title="大四研究计划与时序图调研"></a>大四研究计划与时序图调研</h1><p>[toc] </p>
+<div style="page-break-after: always;"></div>
+
+<h2 id="入学前研究计划"><a href="#入学前研究计划" class="headerlink" title="入学前研究计划"></a>入学前研究计划</h2><p>​        未来，我希望展开对复杂网络与图神经网络结合方向工作的研究，因此，我的研究计划主要包括基础巩固方面和研究工作方面。研究生开学前，我希望可以进一步筑牢基础，同时在过程中完成舆情早期预测的工作。</p>
+<p>​        具体来说，在基础巩固方面，我计划进一步熟悉Pytorch框架，熟悉<a class="link" target="_blank" rel="noopener" href="https://www.dgl.ai/">DGL(Deep Graph Library) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>库的用法，将基础的GCN、GAT、RGCN、GraphSAGE以及TGN的原理与代码实现熟练地掌握，并尝试使用DGL库复现，从框架代码中了解实现原理。</p>
+<p>​        在研究工作方面，我计划在前期广泛地阅读下面调研部分所提到的文献（包括可解释时序图、时序图知识图谱、因果感知时态图学习、时空图等细分方向），向老师们交流学习，确定研究细分方向并寻找idea。中期，我将细致地完成实验，不断验证idea，keep hands dirty。在此期间，我听从组里和老师的安排，逐步适应研究生阶段的工作。后期，我将高质量地完成毕业设计，并希望在研究生开学前通过自己努力有一篇关于时序图的文章可以发表。</p>
+<p>​        对此，我做了一个细致的规划，为研究生入学打好基础，并尽快适应研究生阶段的工作。</p>
+<table>
+<thead>
+<tr>
+<th align="left">时间</th>
+<th align="left">工作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">2024.09-2024.10</td>
+<td align="left">1. 完成GNNs模型不确定性量化与置信度校准工作的结尾工作，完成此工作剩余论文撰写与投稿；<br>2. 大四上学期开学，在校内完成推免答辩，完成推免最后工作；<br>3. 阅读下方提到的时序图相关论文寻找idea，听从潘老师安排与建议，同时保持代码练习，提升手感。</td>
+</tr>
+<tr>
+<td align="left">2024.11-2024.12</td>
+<td align="left">1. 保持阅读最新和调研过的时序图相关论文，提升阅读效率；<br>2. 找到idea后积极与老师沟通，之后尝试实现idea验证效果；<br>3. 听从组里的安排，愿意通过进组或实习提升个人水平，争取一个学期将基础实验做完。</td>
+</tr>
+<tr>
+<td align="left">2025.01-2025.02</td>
+<td align="left">1. 2025假期较早，寒假期间保持阅读文献的习惯，完善自己的知识体系；<br>2. 补充完成实验，验证idea；<br>3. 愿意提前进组，熟悉实验环境。</td>
+</tr>
+<tr>
+<td align="left">2025.03-2025.04</td>
+<td align="left">1. 大四下开学，确定毕业设计题目，计划以时序图作为题目切入设计；<br>2. 继续做时序图实验，顺利的话开始撰写论文，总结实验内容；<br>3. 保持阅读文献，大四下学期阅读《<em>Machine Learning: a Probabilistic Perspective</em>》和图论等文献巩固基础。</td>
+</tr>
+<tr>
+<td align="left">2025.05-2025.06</td>
+<td align="left">1. 高质量完成毕业设计，完成毕业要求相关事宜；<br>2. 完成入学前工作的投稿工作。</td>
+</tr>
+<tr>
+<td align="left">2025.07-2025.08</td>
+<td align="left">1. 研究生入学前暑假期间愿意提前进组学习或实习，适应研究生环境；<br>2. 预习研究生课程，提前学习特别是关于数学的相关知识。</td>
+</tr>
+</tbody></table>
+<h2 id="相关文献及学习资料"><a href="#相关文献及学习资料" class="headerlink" title="相关文献及学习资料"></a>相关文献及学习资料</h2><p><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/abs/2006.10637">TGN原文链接 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://www.dgl.ai/">DEEP GRAPH LIBRARY（DGL）仓库（图神经网络学习框架，支持多种构建图神经网络操作） <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://towardsdatascience.com/temporal-graph-learning-in-2024-feaa9371b8e2">Temporal Graph Learning in 2024 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://towardsdatascience.com/temporal-graph-learning-in-2023-d28d1640dbf2">Temporal Graph Learning in 2023 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://sites.google.com/view/tglworkshop-2023/home">2023年TGL workshop提到的时序图相关应用论文，发表在 NIPS 会议上 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://tgb.complexdatalab.com/">时序图神经网络数据集benchmark <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/abs/2310.15978">时空图论文Graph Deep Learning for Time Series Forecasting <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="基础时序图神经网络调研"><a href="#基础时序图神经网络调研" class="headerlink" title="基础时序图神经网络调研"></a>基础时序图神经网络调研</h2><p>​        引用自Medium的文章<a class="link" target="_blank" rel="noopener" href="https://towardsdatascience.com/temporal-graph-learning-in-2023-d28d1640dbf2">Temporal Graph Learning in 2023 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，时态图网络（TGN）将消息传递神经网络（MPNN）推广到时态图中。 它们通过引入节点MEM来实现这一目的，节点MEM代表节点在给定时间内的状态，是节点过去交互行为的压缩表示。 每当两个节点发生交互时，它们就会互相发送信息，然后用来更新它们的MEM。 在计算节点的嵌入时，会对节点的时间邻居进行额外的图聚合，同时使用原始节点特征和该时间点的记忆。 下面是 TGN 的计算示意图。</p>
+<p>​      这个部分在之前学习TGN的报告中有叙述，最基础的TGN训练过程主要过程是进行以下循环：MEM更新(RNN等)-&gt;图聚合(注意力等)-&gt;当前时间loss计算并与之前的total loss累加后更新权重-&gt;更新MEM…</p>
+<p>![image-20240728172310109](C:\Users\sun\Desktop\temporal graph learning\image-20240728172310109.png)</p>
+<h2 id="最新进展调研"><a href="#最新进展调研" class="headerlink" title="最新进展调研"></a>最新进展调研</h2><p>​        此部分大部分参考来源于Medium文章<a class="link" target="_blank" rel="noopener" href="https://towardsdatascience.com/temporal-graph-learning-in-2024-feaa9371b8e2">Temporal Graph Learning in 2024 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，同时包括之前的学习与调查。主要包括数据集Benchmark的发布、链路预测的进展、时序知识图谱、对抗攻击等。这里只挑选关于舆情早期预测相关的方向汇报。</p>
+<h3 id="时序图Benchmark"><a href="#时序图Benchmark" class="headerlink" title="时序图Benchmark"></a>时序图Benchmark</h3><p>​        <strong>我认为舆情早期预测最好的方式是自建数据集，以解决实际问题。</strong>在最新发展的一项综述文章里，我找到了文章中关于当前最好的几种测试时序图神经网络能力的benchmark（Temporal Graph Benchmark, TGB）。TGB 提供了一个 pypi 软件包，用于自动下载和处理来自五个不同领域的九个数据集，这些数据集具有多达 7200 万条边和 3000 万个时间戳。</p>
+<img lazyload src="/images/loading.svg" data-src="C:\Users\sun\Desktop\temporal graph learning\image-20240729170712864.png" alt="image-20240729170712864" style="zoom:50%;">
+
+<p>​        在Benckmark的dynamic node property prediction（节点属性预测）任务上，网上作者发现<strong>目前的TGN方法没有启发式算法的表现优异，对此在节点预测或可解释任务上，可以从此角度出发解释与创新。</strong>（*Here, we use the Normalized Discounted Cumulative Gain of the top 10 items (NDCG@10) to compare the relative order of the predicted items to that of the ground truth. Interesting, we found that single heuristics outperform existing TG models and this highlights the need for more models focusing on node level tasks in the future.*）</p>
+<h3 id="时空图学习Spatiotemporal-Graphs"><a href="#时空图学习Spatiotemporal-Graphs" class="headerlink" title="时空图学习Spatiotemporal Graphs"></a>时空图学习Spatiotemporal Graphs</h3><p>​        <strong>时空图</strong>被用来表示具有固定拓扑和随时间变化的节点特征的图，通常以与定期采样的观测相对应的离散时间步长变化。时态图认为将动态节点特征视为时间序列，将边视为观测序列之间的函数依赖关系。这不同于舆情早期预测的要求，<strong>舆情早期预测主要是变化的拓扑结构以及固定的节点特征</strong>。</p>
+<p>​        时空图可用于交通预测，如固定的拓扑结构（道路之间的联系，不会随时间变化），具体的工作在<a class="link" target="_blank" rel="noopener" href="https://arxiv.org/abs/2310.15978">Graph Deep Learning for Time Series Forecasting <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>论文中有详细介绍。</p>
+<h3 id="因果感知时态图学习Causality-Aware-Temporal-Graph-Learning"><a href="#因果感知时态图学习Causality-Aware-Temporal-Graph-Learning" class="headerlink" title="因果感知时态图学习Causality-Aware Temporal Graph Learning"></a>因果感知时态图学习Causality-Aware Temporal Graph Learning</h3><p>​        因果感知时态图是在<strong>无向图中考虑图结构的时间拓扑</strong>。一个简单的例子，两个无向边*(a,b)<em>和</em>(b,c)<em>分别出现在时间</em>t₁<em>和</em>t2<em>处，</em>(a,b)<em>和</em>(b,c)<em>分别使用无向图的边连接，三个节点间的关系是无向的。如果</em>(a,b)<em>发生在</em>(b,c)<em>之前，则</em>a<em>可以通过经过</em>b<em>的时间相关路径对</em>c*产生因果影响，即建立了专门的时间拓扑图描述因果感知关系，如下图所示，因果关系不具有橙色线条代表的时间拓扑：</p>
+<img lazyload src="/images/loading.svg" data-src="C:\Users\sun\Desktop\temporal graph learning\image-20240803165847674.png" alt="image-20240803165847674" style="zoom:50%;">
+
+<p>​        具体表示来说，图中的每一条边都是<strong>长度为1</strong>时间相关路径，构成了时间图因果拓扑的一阶模型。一节模型忽略了边的时间顺序，因此在一阶模型中只计算了每个边出现的频率。二阶模型描述了因果特性，简单地将一阶图中的边替换为二阶图中的节点，即将边<em>（a，b）</em>和<em>（b，c）</em>分别变成节点<em>“a→b”</em>和<em>“b →c”</em> ，用<strong>长度为2</strong>的时间相关路径表示，即边*(a→b, b→c)<em>表示</em>a<em>通过</em>b<em>因果影响</em>c* 。</p>
+<p>​        更为一般的，可以将因果时间图推向更高阶k，从而产生用于<strong>时间图因果拓扑的 k阶De Bruijn图模型</strong>。静态路径的中心性（例如接近度或介数）可能会给出关于时态图中节点的真正重要性的误导性结果。因果序列时序图可用于解决<strong>基于时序的中心性预测问题</strong>（论文<a class="link" target="_blank" rel="noopener" href="https://arxiv.org/abs/2310.15865">Using Causality-Aware Graph Neural Networks to Predict Temporal Centralities in Dynamic Graphs  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>）。</p>
+<h3 id="可解释的时序图神经网络方法"><a href="#可解释的时序图神经网络方法" class="headerlink" title="可解释的时序图神经网络方法"></a>可解释的时序图神经网络方法</h3><p>​        有学者探寻可解释性通过找到影响结果的节点集。论文<a class="link" target="_blank" rel="noopener" href="https://openreview.net/forum?id=BR_ZhvcYbGJ">Explaining Temporal Graph Models through an Explorer-Navigator Framework <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>使用explorer-navigator架构，使用搜索树的方式，从给定大小的时间图子集中查找影响节点集合。</p>
+<p>​        还有一种思路是确定对结果产生影响的时间主题（产生联系（边）的时间）。论文<a class="link" target="_blank" rel="noopener" href="https://arxiv.org/abs/2310.19324">TempME: Towards the Explainability of Temporal Graph Neural Networks via Motif Discovery <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>中提出了对节点时间上接近或距离上相邻的节点信息进行聚合，引入时间主题<em>temporal motifs</em>的概念，通过输入他们设计的编码器，利用preferential attachment rule和triadic closure rule准则确定时间主题影响顺序，整个过程如下：</p>
+<img lazyload src="/images/loading.svg" data-src="C:\Users\sun\Desktop\temporal graph learning\image-20240818190607249.png" alt="image-20240818190607249" style="zoom:50%;">
+
+<h2 id="Deep-Graph-Library库"><a href="#Deep-Graph-Library库" class="headerlink" title="Deep Graph Library库"></a>Deep Graph Library库</h2><p>​        <a class="link" target="_blank" rel="noopener" href="https://www.dgl.ai/">Deep Graph Library (dgl.ai) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 是一个用于处理图神经网络（GNN）的 Python 库，包括图构建操作、图神经网络模型构建操作、高效计算操作等各种对于图数据结构的高效操作。在我的省级大创RGCN模型的构建中，我使用了DGL库，深深地感受到了其使用的方便性。</p>
+<p>​        在DGL库中可以找到目前经典的GNNs模型如GCN，GAT，RGCN，TGN等复现。使用DGL库可以结合Pytorch、Tensorflow等，结合张量复现经典的图神经网络模型，提高运算效率。</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> </li>
+        <li><strong>Author:</strong> 孙睿睿</li>
+        <li><strong>Created at
+                :</strong> 2024-07-26 10:43:23</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-08-18 19:33:16
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://redefine.ohevan.com/2024/07/26/temporal graph learning/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/10/14/point_process/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">论文阅读——Introduction to Point Processes</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/07/26/%E5%A4%A7%E5%9B%9B%E8%A7%84%E5%88%92%E4%B8%8E%E6%97%B6%E5%BA%8F%E5%9B%BE%E8%B0%83%E7%A0%94/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item"></span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          recaptchaV3Key: "wasd",
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title"></div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E5%9B%9B%E7%A0%94%E7%A9%B6%E8%AE%A1%E5%88%92%E4%B8%8E%E6%97%B6%E5%BA%8F%E5%9B%BE%E8%B0%83%E7%A0%94"><span class="nav-text">大四研究计划与时序图调研</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A5%E5%AD%A6%E5%89%8D%E7%A0%94%E7%A9%B6%E8%AE%A1%E5%88%92"><span class="nav-text">入学前研究计划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%96%87%E7%8C%AE%E5%8F%8A%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99"><span class="nav-text">相关文献及学习资料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%97%B6%E5%BA%8F%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%B0%83%E7%A0%94"><span class="nav-text">基础时序图神经网络调研</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95%E8%B0%83%E7%A0%94"><span class="nav-text">最新进展调研</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E5%BA%8F%E5%9B%BEBenchmark"><span class="nav-text">时序图Benchmark</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E7%A9%BA%E5%9B%BE%E5%AD%A6%E4%B9%A0Spatiotemporal-Graphs"><span class="nav-text">时空图学习Spatiotemporal Graphs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%A0%E6%9E%9C%E6%84%9F%E7%9F%A5%E6%97%B6%E6%80%81%E5%9B%BE%E5%AD%A6%E4%B9%A0Causality-Aware-Temporal-Graph-Learning"><span class="nav-text">因果感知时态图学习Causality-Aware Temporal Graph Learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E8%A7%A3%E9%87%8A%E7%9A%84%E6%97%B6%E5%BA%8F%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%96%B9%E6%B3%95"><span class="nav-text">可解释的时序图神经网络方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Deep-Graph-Library%E5%BA%93"><span class="nav-text">Deep Graph Library库</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">孙睿睿</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        45 posts in total
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.1</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>

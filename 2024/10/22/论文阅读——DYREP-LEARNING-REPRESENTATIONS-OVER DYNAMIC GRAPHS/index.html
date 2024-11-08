@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="孙睿睿">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://Sundiasy.github.io/2024/10/22/论文阅读——dyrep-learning-representations-over dynamic graphs/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="DYREP: LEARNING REPRESENTATIONS OVER DYNAMIC GRAPHSIntroduction回答两个问题  What can serve as an elegant model for dynamic processes over graphs? How can one leverage such a model to learn dynamic node rep">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文阅读——DYREP: LEARNING REPRESENTATIONS OVER DYNAMIC GRAPHS">
+<meta property="og:url" content="http://sundiasy.github.io/2024/10/22/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E2%80%94%E2%80%94DYREP-LEARNING-REPRESENTATIONS-OVER%20DYNAMIC%20GRAPHS/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="DYREP: LEARNING REPRESENTATIONS OVER DYNAMIC GRAPHSIntroduction回答两个问题  What can serve as an elegant model for dynamic processes over graphs? How can one leverage such a model to learn dynamic node rep">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://sundiasy.github.io/2024/10/22/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E2%80%94%E2%80%94DYREP-LEARNING-REPRESENTATIONS-OVER%20DYNAMIC%20GRAPHS/image-20241023123700325.png">
+<meta property="og:image" content="http://sundiasy.github.io/2024/10/22/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E2%80%94%E2%80%94DYREP-LEARNING-REPRESENTATIONS-OVER%20DYNAMIC%20GRAPHS/image-20241023124341406.png">
+<meta property="article:published_time" content="2024-10-22T02:28:11.000Z">
+<meta property="article:modified_time" content="2024-11-08T14:35:13.527Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="point process">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://sundiasy.github.io/2024/10/22/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E2%80%94%E2%80%94DYREP-LEARNING-REPRESENTATIONS-OVER%20DYNAMIC%20GRAPHS/image-20241023123700325.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            论文阅读——DYREP: LEARNING REPRESENTATIONS OVER DYNAMIC GRAPHS -
+        
+        孙睿睿的博客站
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+        <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    
+<script src="/js/libs/anime.min.js"></script>
+
+    <h1 class="ml13">
+        孙睿睿的博客站
+    </h1>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+
+        anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [100,0],
+                translateZ: 0,
+                opacity: [0,1],
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i
+            }).add({
+            targets: '.ml13 .letter',
+            translateY: [0,-100],
+            opacity: [1,0],
+            easing: "easeInExpo",
+            duration: 1200,
+            delay: (el, i) => 100 + 30 * i
+        });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            hidePreloaderAfterTimeout(1000); // Hide after 1000 milliseconds once the window has loaded
+        });
+
+        // Backup failsafe: Hide preloader after a maximum of 5000 milliseconds, regardless of the window load event
+        hidePreloaderAfterTimeout(5000);
+
+        function hidePreloaderAfterTimeout(delay) {
+            setTimeout(function () {
+                var preloader = document.querySelector('.preloader');
+                preloader.style.opacity = '0';
+                setTimeout(function () {
+                    preloader.style.display = 'none';
+                }, 200);
+            }, delay);
+        }
+    </script>
+</div>
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"sundiasy.github.io","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"5rem","h2":"4rem","h3":"2.8rem","h4":"2.5rem","h5":"2.2rem","h6":"2rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"孙睿睿的博客站","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.1","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                孙睿睿的博客站
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">43</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">6</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">45</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">论文阅读——DYREP: LEARNING REPRESENTATIONS OVER DYNAMIC GRAPHS</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/redefine-avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">孙睿睿</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-10-22 10:28:11</span>
+        <span class="mobile">2024-10-22 10:28:11</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-11-08 22:35:13</span>
+            <span class="mobile">2024-11-08 22:35:13</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/point-process/">point process</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1 id="DYREP-LEARNING-REPRESENTATIONS-OVER-DYNAMIC-GRAPHS"><a href="#DYREP-LEARNING-REPRESENTATIONS-OVER-DYNAMIC-GRAPHS" class="headerlink" title="DYREP: LEARNING REPRESENTATIONS OVER DYNAMIC GRAPHS"></a>DYREP: LEARNING REPRESENTATIONS OVER DYNAMIC GRAPHS</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>回答两个问题</p>
+<ul>
+<li>What can serve as an elegant model for dynamic processes over graphs?</li>
+<li>How can one leverage such a model to learn dynamic node representations that are effectively able to capture evolving graph information over time</li>
+</ul>
+<p>回答第一个问题，需要构建</p>
+<ol>
+<li>拓扑演化：其中节点和边的数量预计会随着时间的推移而增长（或缩小），从而导致图中的结构变化;</li>
+<li>以及节点交互：其涉及可能在结构上连接或可能不连接的节点之间的活动。对这些非线性演化的动态过程之间的交错依赖关系进行建模是推进动态图的正式模型的关键下一步。</li>
+</ol>
+<p>回答第二个问题，目前现存的时序图方法包含两类</p>
+<ul>
+<li>一类是D-TDGs，分立时间提取快照，这些方法倾向于保留（编码）非常有限的结构信息并且在非常粗略的级别捕获时间信息，这导致快照之间的信息丢失并且缺乏捕获细粒度时间动态的能力。</li>
+<li>连续时间方法，在更细的时间粒度上对演化进行建模</li>
+</ul>
+<p>我们提出，任何动态图必须最低限度地表示为两个基本过程在不同的时间尺度上演变的结果</p>
+<ul>
+<li>Association Process：改变了图的结构，并导致节点之间的长期信息交换</li>
+<li>Communication process：与节点之间（不一定连接）的活动相关，导致节点之间的临时信息流</li>
+</ul>
+<p>在文章中作者做了事情：我们提出了一种新的动态图表示学习框架DyRep，通过上面表达的潜在中介过程来模拟两个观察过程的交错进化，并随着时间的推移有效地学习更丰富的节点表示。我们的框架摄取动态图形信息的形式的关联和通信事件随着时间的推移，并更新节点表示当这些事件发生时。我们建立一个两个时间尺度的深度Point process捕获两个观测过程的连续时间细粒度时间动态。我们进一步用一个深度归纳表示网络来参数化时间点过程的条件强度函数，该网络学习函数来计算节点表示。最后，我们通过设计一种新的时间注意机制来耦合我们框架的结构和时间组件，该机制使用学习的强度函数来诱导邻域节点的时间注意。这允许捕获随着时间的推移控制节点表示的高度交织和非线性动态。我们设计了一个高效的无监督训练过程，用于我们框架的端到端训练。我们展示了一致的和显着的改进，在两个现实世界的动态图的动态链接预测和时间预测的任务的最先进的代表性基线。我们进一步提出了一个广泛的定性分析，通过嵌入可视化和消融研究，以辨别我们的框架的有效性。</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><h3 id="Point-Process"><a href="#Point-Process" class="headerlink" title="Point Process"></a>Point Process</h3><p>随机点过程是一种随机过程，其实现由时间上的离散事件t1、t2、….时间点过程就是这样一个随机过程，它可以等价地表示为计数过程N（t），它包含了直到时间t的事件的数目。描述时间点过程的一般方法是通过条件强度函数λ（t），即给定先前事件的事件发生率的随机模型。形式上，λ（t）dt是在小窗口[t，t + dt）中观察到事件的条件概率，$\lambda(t) \mathrm{d} t:&#x3D;\mathbb{P}[ $ event in $ [t, t+\mathrm{d} t) \mid \mathcal{T}(t)]&#x3D;\mathbb{E}[\mathrm{d} N(t) \mid \mathcal{T}(t)]$其中$$ T ( t ) &#x3D; t _ { k } | t _ { k } &lt; t$$是t之前的历史。类似地，对于t &gt; tn且给定历史T &#x3D; t1，…，tn，我们将在[tn，t]期间无事件发生的条件概率刻画为$$ S(t \mid \mathcal{T})&#x3D;\exp \left(-\int_{t_{n}}^{t} \lambda(\tau) \mathrm{d} \tau\right) $$，这被称为过程的生存函数的报告。此外，事件在时间t发生的条件密度被定义为$$ f ( t ) &#x3D; \lambda ( t ) S ( t ) .$$。强度λ（t）通常用于捕获感兴趣的现象-常见形式包括泊松过程、霍克斯过程、自我纠正过程。</p>
+<h3 id="NOTATIONS-AND-DYNAMIC-GRAPH-SETTING"><a href="#NOTATIONS-AND-DYNAMIC-GRAPH-SETTING" class="headerlink" title="NOTATIONS AND DYNAMIC GRAPH SETTING"></a>NOTATIONS AND DYNAMIC GRAPH SETTING</h3><p>包括两种</p>
+<p><strong>Event Observation：</strong>事件Communication和Association Process都是以时间窗口[t0，T]上图G上的节点之间观察到的二元事件dyadic events的形式实现的，并按时间排序。对于时间t的任何类型的事件，我们使用以下形式的规范元组表示：$ e &#x3D; ( u , v , t , k )$其中u，v是涉及到事件的两个节点。t表示事件的时间。k ∈ {0，1}，我们使用k &#x3D; 0表示来自拓扑Association Process（关联）的事件，使用k &#x3D; 1表示来自节点Communication Process（通信）的事件。图中的边仅通过拓扑事件（Association process）出现，而交互事件（Communication process）不贡献它们。因此，k表示与分别生成拓扑（网络的动态）和交互事件（网络上的动态）的过程相关联的尺度（演化速率）的抽象。然后，我们将窗口[0，T]中按时间排序的P个观察事件的全集表示为$$ O &#x3D; \left{ ( u , v , t , k ) _ { p } \right} _ { p &#x3D; 1 } ^ { p }$$。$$ t _ { p } \in R ^ { + } , 0 \leq t _ { p } \leq T .$$</p>
+<p><strong>Node Representation：令</strong>$$ z ^ { v } \in R ^ { d }$$表示节点v的d维表示。随着表示随时间的推移而演变，我们将它们限定为时间的函数：$$ z ^ { v } ( t )$$节点v在时间t涉及v的事件之后更新的表示。我们使用$z ^ { v } ( t )$来表示节点v在t之前的最近更新嵌入。</p>
+<h3 id="Dynamic-Graph-Setting"><a href="#Dynamic-Graph-Setting" class="headerlink" title="Dynamic Graph Setting"></a>Dynamic Graph Setting</h3><p>我们的框架观察图的演化作为一个事件流O，因此任何新的节点将始终被观察到作为这样的事件的一部分。这将导致从数据中获得的节点的自然排序。由于我们的方法是归纳的，我们从不学习特定于节点的表示，而是学习函数来计算节点表示。由于我们的方法是归纳的，我们从不学习特定于节点的表示，而是学习函数来计算节点表示。在这项工作中，我们只支持网络的增长，即我们只对节点和结构边的添加进行建模，并将删除保留为未来的工作。此外，对于模型的一般描述，我们将假设图中的边没有类型，节点没有属性，但我们在附录B中讨论了如何使用我们的模型来适应这些特征的细节。</p>
+<h2 id="PROPOSED-METHOD-DYREP"><a href="#PROPOSED-METHOD-DYREP" class="headerlink" title="PROPOSED METHOD: DYREP"></a>PROPOSED METHOD: DYREP</h2><p>定义local、global effects。当在两个节点之间观察到事件时，信息从一个节点的邻域流向另一个节点，并相应地影响节点的表示。Communication event（交互）只在两个节点之间传播本地信息，但Association event会改变拓扑结构，从而具有更大的全局影响。</p>
+<h3 id="MODELING-TWO-TIME-SCALE-OBSERVED-GRAPH-DYNAMICS"><a href="#MODELING-TWO-TIME-SCALE-OBSERVED-GRAPH-DYNAMICS" class="headerlink" title="MODELING TWO-TIME SCALE OBSERVED GRAPH DYNAMICS"></a>MODELING TWO-TIME SCALE OBSERVED GRAPH DYNAMICS</h3><p>使用时间点过程表示communication and association events。定义节点u和节点v在时间t时的条件密度函数为<br>$$<br>\lambda _ { k } ^ { u , v } ( t ) &#x3D; f _ { k } ( g _ { k } ^ { u , v } ( t ) )<br>$$<br>$$ \overline { t }$$代表仅仅早于当前事件发生的时间，附加定义如下：<br>$$<br>g _ { k } ^ { u , v } ( t ) &#x3D; \omega _ { k } ^ { T } \cdot \left[ z ^ { u } ( \overline { t } ) ; z ^ { v } ( \overline { t } ) \right]<br>$$<br>可训练参数和concat。</p>
+<p>定义fk需要考虑因素1. 强度必须是正的。2. communication and association process被包含在不同的时间尺度上，于是使用改进的Softplus定义：<br>$$<br>f _ { k } ( x ) &#x3D; \psi _ { k } \log ( 1 + e x p ( x &#x2F; \psi _ { k } ) )<br>$$<br>$ \psi _ { k }$是可训练参数，对应于由相应过程产生的事件的速率。</p>
+<h3 id="LEARNING-LATENT-MEDIATION-PROCESS-VIA-TEMPORALLY-ATTENTIVE-REPRESENTATION-NETWORK"><a href="#LEARNING-LATENT-MEDIATION-PROCESS-VIA-TEMPORALLY-ATTENTIVE-REPRESENTATION-NETWORK" class="headerlink" title="LEARNING LATENT MEDIATION PROCESS VIA TEMPORALLY ATTENTIVE REPRESENTATION NETWORK"></a>LEARNING LATENT MEDIATION PROCESS VIA TEMPORALLY ATTENTIVE REPRESENTATION NETWORK</h3><p>节点更新需要基于以下原则，</p>
+<ul>
+<li><p>Self-Propagation：自传播可以被认为是一个最小的组成部分的动态管理一个单独的节点的演变。节点在嵌入空间中表示相对于其先前位置（例如，特征集）而不是以随机方式演进。</p>
+</li>
+<li><p>Exogenous Drive：一些外生力可以在时间间隔期间（例如，在涉及该节点的两个全局事件之间）平滑地更新节点的当前特征。</p>
+</li>
+<li><p>Localized Embedding Propagation：事件中涉及的两个节点形成了一个临时（通信）或永久（关联）路径，用于将信息从一个节点的邻域传播到另一个节点。这对应于通过参与事件的另一节点的二阶邻近度节点的影响（参见附录A的图形描述）。</p>
+</li>
+</ul>
+<p>定义为：<br>$$<br>\mathbf{z}^{v}(t_{p})&#x3D;\sigma(\underbrace{\mathbf{W}^{struct}\mathbf{h}<em>{struct}^{u}(\bar{t</em>{p}})}<em>{\text{Localized Embedding Propagation}}+\underbrace{\mathbf{W}^{rec}\mathbf{z}^{v}(\bar{t</em>{p}^{v}})}<em>{\text{Self-Propagation}}+\underbrace{\mathbf{W}^{t}(t</em>{p}-\bar{t_{p}^{v}})}_{\text{Exogenous Drive}},<br>$$</p>
+<p>1)节点u充当将信息从$${\mathcal{N}}_{u}$$传递到节点v的桥梁，因此v通过u以聚合形式接收信息。2)当u的每个邻居将其信息传递给v时，节点u中继的信息由聚合函数管理，该聚合函数由u与其邻居的通信和关联历史参数化。</p>
+<h4 id="TEMPORALLY-ATTENTIVE-AGGREGATION"><a href="#TEMPORALLY-ATTENTIVE-AGGREGATION" class="headerlink" title="TEMPORALLY ATTENTIVE AGGREGATION"></a>TEMPORALLY ATTENTIVE AGGREGATION</h4><p>对于一个给定的节点，并不是所有的邻居都是同样重要的，因此以某种加权的方式从每个邻居捕获信息变得非常重要。我们提出了一种新的基于时间点处理的注意机制，该机制使用时间信息来计算节点之间的结构边的注意系数。然后，这些系数用于计算嵌入传播所需的聚合量（$\mathbf{h}_{struct}$）。</p>
+<p>为了正式捕获不同邻居的影响差异，我们提出了一种新的基于条件强度的注意层，该注意层使用矩阵S来诱导共享注意机制来计算邻居的注意系数。<br>$$<br>q_{ui}(t)&#x3D;\frac{\exp(\mathcal{S}<em>{u i}(\bar{t}))}{\sum</em>{i^{\prime}\in\mathcal{N}<em>{u}(t)}\exp(\mathcal{S}</em>{u i^{\prime}}(\bar{t}))}<br>$$<br>$$  q_{ui} $$表示在时间t的邻居i的注意权重，因此它是时间上演变的量。然后，通过采用如下的跨邻居的关注聚合机制，使用这些关注系数来计算节点u的聚合信息$$\mathbf{h}<em>{struct}^u(\hat{\bar{t}})$$：<br>$$<br>\mathbf{h}</em>{struct}^{u}(\bar{t}):&#x3D;:\max\left(\left{\sigma\left(q_{ui}(t)\cdot\mathbf{h}^{i}(\bar{t})\right),\forall i\in\mathcal{N}_{u}(\bar{t})\right}\right)<br>$$</p>
+<p>其中，$$\mathbf{h}^{i}(\bar{t}):&#x3D;:\mathbf{W}^{h}\mathbf{z}^{i}(\bar{t})+\mathbf{b}^{h}:\mathrm{and}:\mathbf{W}^{h}:\in:\mathbb{R}^{d\times d}:\mathrm{and}:\mathbf{b}^{h}:\in:\mathbb{R}^{d}$$是控制u的每个邻居传播的信息的参数$\mathbf{z}^{i}(\bar{t})\in\mathbb{R}^{d}$是node i最近的embedding。</p>
+<h5 id="Construction-and-Update-of-S"><a href="#Construction-and-Update-of-S" class="headerlink" title="Construction and Update of S"></a>Construction and Update of S</h5><p>我们构造一个随机矩阵S（在前面的部分中用于参数化注意力）来捕获复杂的时间信息。在初始时间点t &#x3D; t0，我们直接从A（t0）构造S（t0）。构建$$\mathcal{S}<em>{v}(t</em>{0}):\mathrm{as:<del>}\mathcal{S}<em>{vu}(t</em>{0}):&#x3D;:0:\mathrm{if}:(v:&#x3D;:u:\mathrm{or</del>}\mathbf{A}<em>{vu}(t</em>{0}):&#x3D;:0)$$且满足条件：$$\mathcal{S}<em>{vu}(t</em>{0}):&#x3D;:\frac{1}{|\mathcal{N}<em>{v}(t</em>{0})|}:\mathrm{if}:\mathcal{N}<em>{v}(t</em>{0}):&#x3D;:{u:::\mathbf{A}<em>{uv}(t</em>{0}):&#x3D;:1}.$$</p>
+<p>再接受到事件$$o&#x3D;(u,v,t,k)$$后，我们根据k的观测值对A和S进行更新。A仅针对关联事件被更新（k&#x3D;0，结构改变）。因此，S的值仅在两种情况下更新&#x2F;激活：</p>
+<ol>
+<li>当前事件是已经具有结构边的节点之间的相互作用$$(\mathbf{A}_{uv}(t)&#x3D;1\mathrm{<del>and</del>}k&#x3D;1)$$</li>
+<li>当前事件是Association event（k &#x3D; 0）。给定节点u的邻域，b表示每个边缘的背景（基本）注意力，其是基于邻域大小的均匀注意力。</li>
+</ol>
+<p>更新注意力在以下操作中：对于情况(1)，使用事件的强度来更新对应的S条目的注意力。对于情况（2），重复与（1）相同的操作，但也随着邻域大小的增加，调整具有其他邻域的边缘的背景注意力（通过$$b-b^{\prime}$$，$$b$$和$$b^{\prime}$$分别是新的和旧的背景注意力）。从数学观点来看，这种更新类似于标准的时间点过程公式，其中来自b的项用作背景注意力，而λ可以被视为基于内源强度的注意力。</p>
+<p>算法过程如下：</p>
+<p><img lazyload src="/images/loading.svg" data-src="/2024/10/22/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E2%80%94%E2%80%94DYREP-LEARNING-REPRESENTATIONS-OVER%20DYNAMIC%20GRAPHS/image-20241023123700325.png" alt="image-20241023123700325"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/2024/10/22/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E2%80%94%E2%80%94DYREP-LEARNING-REPRESENTATIONS-OVER%20DYNAMIC%20GRAPHS/image-20241023124341406.png" alt="image-20241023124341406"></p>
+<h2 id="模型训练"><a href="#模型训练" class="headerlink" title="模型训练"></a>模型训练</h2><p>$$<br>\mathcal{L}:&#x3D;:-\sum_{p&#x3D;1}^{P}\log\left(\lambda_{p}(t)\right):+:\int_{0}^{T}\Lambda(\tau)d\tau,:\mathrm{where}:\lambda_{p}(t):&#x3D;:\lambda_{k_{p}}^{u_{p},v_{p}}(t)<br>$$</p>
+<p> double </p>
+<p>node labeling</p>
+<p>链路预测 layer多一层</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> 论文阅读——DYREP: LEARNING REPRESENTATIONS OVER DYNAMIC GRAPHS</li>
+        <li><strong>Author:</strong> 孙睿睿</li>
+        <li><strong>Created at
+                :</strong> 2024-10-22 10:28:11</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-11-08 22:35:13
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://redefine.ohevan.com/2024/10/22/论文阅读——DYREP-LEARNING-REPRESENTATIONS-OVER DYNAMIC GRAPHS/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/point-process/">#point process</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/11/04/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E2%80%94%E2%80%94A-Survey-of-Graph-Meets-Large-Language-Model-Progress-and-Future-Directions/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">论文阅读——A Survey of Graph Meets Large Language Model: Progress and Future Directions</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/10/20/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E2%80%94%E2%80%94Deep-Learning-for-Dynamic-Graphs%20Models%20and%20Benchmarks/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">论文阅读——Deep Learning for Dynamic Graphs: Models and Benchmarks</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          recaptchaV3Key: "wasd",
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">论文阅读——DYREP: LEARNING REPRESENTATIONS OVER DYNAMIC GRAPHS</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DYREP-LEARNING-REPRESENTATIONS-OVER-DYNAMIC-GRAPHS"><span class="nav-text">DYREP: LEARNING REPRESENTATIONS OVER DYNAMIC GRAPHS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-text">背景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Point-Process"><span class="nav-text">Point Process</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NOTATIONS-AND-DYNAMIC-GRAPH-SETTING"><span class="nav-text">NOTATIONS AND DYNAMIC GRAPH SETTING</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dynamic-Graph-Setting"><span class="nav-text">Dynamic Graph Setting</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PROPOSED-METHOD-DYREP"><span class="nav-text">PROPOSED METHOD: DYREP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MODELING-TWO-TIME-SCALE-OBSERVED-GRAPH-DYNAMICS"><span class="nav-text">MODELING TWO-TIME SCALE OBSERVED GRAPH DYNAMICS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LEARNING-LATENT-MEDIATION-PROCESS-VIA-TEMPORALLY-ATTENTIVE-REPRESENTATION-NETWORK"><span class="nav-text">LEARNING LATENT MEDIATION PROCESS VIA TEMPORALLY ATTENTIVE REPRESENTATION NETWORK</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83"><span class="nav-text">模型训练</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">孙睿睿</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        45 posts in total
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.1</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>

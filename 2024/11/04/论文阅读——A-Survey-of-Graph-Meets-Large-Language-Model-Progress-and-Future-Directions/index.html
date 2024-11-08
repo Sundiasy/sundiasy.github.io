@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="孙睿睿">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://Sundiasy.github.io/2024/11/04/论文阅读——a-survey-of-graph-meets-large-language-model-progress-and-future-directions/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="[toc] A Survey of Graph Meets Large Language Model: Progress and Future Directions摘要在引文网络、社交网络和生物数据等现实应用中，图在表示和分析复杂关系方面发挥着重要作用。近年来，大型语言模型（LLM）在各个领域都取得了巨大的成功，它也被应用于与图形相关的任务中，以超越传统的基于图神经网络（GNN）的方法，并产生最">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文阅读——A Survey of Graph Meets Large Language Model: Progress and Future Directions">
+<meta property="og:url" content="http://sundiasy.github.io/2024/11/04/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E2%80%94%E2%80%94A-Survey-of-Graph-Meets-Large-Language-Model-Progress-and-Future-Directions/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="[toc] A Survey of Graph Meets Large Language Model: Progress and Future Directions摘要在引文网络、社交网络和生物数据等现实应用中，图在表示和分析复杂关系方面发挥着重要作用。近年来，大型语言模型（LLM）在各个领域都取得了巨大的成功，它也被应用于与图形相关的任务中，以超越传统的基于图神经网络（GNN）的方法，并产生最">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://sundiasy.github.io/2024/11/04/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E2%80%94%E2%80%94A-Survey-of-Graph-Meets-Large-Language-Model-Progress-and-Future-Directions/image-20241104170235857.png">
+<meta property="og:image" content="http://sundiasy.github.io/2024/11/04/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E2%80%94%E2%80%94A-Survey-of-Graph-Meets-Large-Language-Model-Progress-and-Future-Directions/image-20241104211514630.png">
+<meta property="article:published_time" content="2024-11-04T07:09:11.000Z">
+<meta property="article:modified_time" content="2024-11-08T14:34:29.581Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Dynamic Graph">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://sundiasy.github.io/2024/11/04/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E2%80%94%E2%80%94A-Survey-of-Graph-Meets-Large-Language-Model-Progress-and-Future-Directions/image-20241104170235857.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            论文阅读——A Survey of Graph Meets Large Language Model: Progress and Future Directions -
+        
+        孙睿睿的博客站
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+        <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    
+<script src="/js/libs/anime.min.js"></script>
+
+    <h1 class="ml13">
+        孙睿睿的博客站
+    </h1>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+
+        anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [100,0],
+                translateZ: 0,
+                opacity: [0,1],
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i
+            }).add({
+            targets: '.ml13 .letter',
+            translateY: [0,-100],
+            opacity: [1,0],
+            easing: "easeInExpo",
+            duration: 1200,
+            delay: (el, i) => 100 + 30 * i
+        });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            hidePreloaderAfterTimeout(1000); // Hide after 1000 milliseconds once the window has loaded
+        });
+
+        // Backup failsafe: Hide preloader after a maximum of 5000 milliseconds, regardless of the window load event
+        hidePreloaderAfterTimeout(5000);
+
+        function hidePreloaderAfterTimeout(delay) {
+            setTimeout(function () {
+                var preloader = document.querySelector('.preloader');
+                preloader.style.opacity = '0';
+                setTimeout(function () {
+                    preloader.style.display = 'none';
+                }, 200);
+            }, delay);
+        }
+    </script>
+</div>
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"sundiasy.github.io","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"5rem","h2":"4rem","h3":"2.8rem","h4":"2.5rem","h5":"2.2rem","h6":"2rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"孙睿睿的博客站","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.1","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                孙睿睿的博客站
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">43</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">6</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">45</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">论文阅读——A Survey of Graph Meets Large Language Model: Progress and Future Directions</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/redefine-avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">孙睿睿</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-11-04 15:09:11</span>
+        <span class="mobile">2024-11-04 15:09:11</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-11-08 22:34:29</span>
+            <span class="mobile">2024-11-08 22:34:29</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/LLM/">LLM</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Dynamic-Graph/">Dynamic Graph</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <p> [toc]</p>
+<h1 id="A-Survey-of-Graph-Meets-Large-Language-Model-Progress-and-Future-Directions"><a href="#A-Survey-of-Graph-Meets-Large-Language-Model-Progress-and-Future-Directions" class="headerlink" title="A Survey of Graph Meets Large Language Model: Progress and Future Directions"></a>A Survey of Graph Meets Large Language Model: Progress and Future Directions</h1><h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>在引文网络、社交网络和生物数据等现实应用中，图在表示和分析复杂关系方面发挥着重要作用。近年来，大型语言模型（LLM）在各个领域都取得了巨大的成功，它也被应用于与图形相关的任务中，以超越传统的基于图神经网络（GNN）的方法，并产生最新的性能。</p>
+<p>在本次调查中，我们首先对将LLM与图表相结合的现有方法进行了全面的回顾和分析。首先，我们提出了一种新的分类法，根据法学硕士在图相关任务中所扮演的角色（即增强器、预测器和对齐组件）将现有方法分为三类。 然后我们系统地调查了分类法三个类别的代表性方法。 最后，我们讨论了现有研究的剩余局限性，并强调了未来研究的有希望的途径。 </p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>GNN的主要目标是通过节点间的递归消息传递和聚合机制，为不同类型的下游任务获取节点、边或图级的可表达表示。</p>
+<p>近年来，在大型语言模型（LLM）（如Transformers）中取得了显著的进步[Vaswani等人，2017年]、BERT [肯顿和图塔诺娃，2019年]、GPT [布朗等人，2020年]及其变体。</p>
+<h3 id="LLMs-help-graph-related-tasks"><a href="#LLMs-help-graph-related-tasks" class="headerlink" title="LLMs help graph-related tasks"></a>LLMs help graph-related tasks</h3><p>虽然GNN擅长捕获结构信息，但它们主要依赖于语义约束的Embedding作为节点特征，限制了它们表达节点的全部复杂性的能力。通过整合LLM，GNN可以通过更强大的节点特性来增强，这些节点特性可以有效地捕获结构和上下文方面。LLM同时利用GNN捕捉结构关系的能力，从而实现更全面、更强大的图形学习。</p>
+<p>例如，TAPE [He等人，2023]利用与节点相关的语义知识（即，论文），以提高GNN中初始节点嵌入的质量。此外，InstructGLM [Ye等人，2023]用LLM替换了GNN中的预测器，通过扁平化图形和设计指令提示等技术利用自然语言的表达能力。分子STM [Liu等人，2022]将GNN和LLM对齐到相同的向量空间中以将文本知识引入到图中（即，分子），从而提高推理能力。</p>
+<p>很明显，LLM从不同的角度对图形相关任务有显著的影响。如图2所示，为了实现更好的系统性概述，我们按照Chen等人[2023a]的方法组织了我们的一级分类，根据角色进行分类（即：增强器、预测器和对齐组件）。我们进一步细化了分类法，并为初始类别引入了更多的粒度。</p>
+<h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h3><p>然而，这两种方法都有其局限性，即覆盖面太广，而且缺乏专门关注LLM如何增强图的分类法。相比之下，我们关注图形和文本模态共存的场景，并提出了一种更细粒度的分类法，以系统地回顾和总结用于图形相关任务的LLM技术的现状。</p>
+<h3 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h3><p>本文的贡献主要体现在以下三个方面。(1)结构化分类。该领域的一个广泛的概述是一个结构化的分类法，将现有的作品分为四个类别（图2）。(2)全面检讨。在此基础上，系统地阐述了面向图相关任务的逻辑学习机的研究现状.(3)一些未来的发展方向。我们讨论了现有工作的剩余局限性，并指出了可能的未来方向。</p>
+<h2 id="Preliminary"><a href="#Preliminary" class="headerlink" title="Preliminary"></a>Preliminary</h2><h3 id="图神经网络"><a href="#图神经网络" class="headerlink" title="图神经网络"></a>图神经网络</h3><p>略过</p>
+<h3 id="图预训练和prompting"><a href="#图预训练和prompting" class="headerlink" title="图预训练和prompting"></a>图预训练和prompting</h3><p>虽然GNN在图机器学习方面取得了一定的成功，但它们需要昂贵的注释，而且几乎不能推广到看不见的数据。为了弥补这些不足，图预训练旨在为图模型提取一些通用知识，以轻松处理不同的任务，而无需显著的注释成本。</p>
+<p>目前主流的图形标注方法可分为对比法和生成法。例如，GraphCL [You等人，2020年]和GCA [Zhu等人，2021]遵循对比学习框架并最大限度地提高两个增强视图之间的一致性。Sun等人[2023b]将对比的思想扩展到超图。GraphMAE [Hou等人，2022]、S2GAE [Tan等人，2023a]和WGDN [Cheng等人，2023]屏蔽图的分量并尝试重构原始数据。</p>
+<p>典型的预训练和微调学习方案是基于预训练任务和下游任务共享一些共同的内在任务空间的假设。相反，在自然语言处理领域，研究人员逐渐将重点放在一种新的范式上，即“预训练、提示和微调”，旨在重新制定输入数据以适应借口。这一思想也自然而然地应用到了图形学习领域。GPPT[Sun等人，2022]首先通过掩蔽边缘预测对图模型进行预训练，然后将独立节点修改为令牌对，并将下游分类重新表示为边预测任务。此外，All in One[Sun等人，2023a]提出了一个多任务提示框架，该框架统一了图形提示和语言提示的格式。</p>
+<h3 id="Large-Language-Models"><a href="#Large-Language-Models" class="headerlink" title="Large Language Models"></a>Large Language Models</h3><p>定义：具体地说，LLM是那些巨大的语言模型（即，十亿级），其经历对大量数据的预训练，而PLM是指具有中等参数大小的那些早期预训练模型（即，百万级），可以很容易地对特定于任务的数据进行进一步的微调，以便为下游任务实现更好的结果。由于GNN的参数大小相对较小，因此将GNN和LLM合并通常不需要具有大参数的LLM。因此，我们按照Liu等人[2023b]的建议，在本次调查中扩展了LLM的定义，以涵盖之前调查中定义的LLM和PLM。</p>
+<p>Evolution：基于非自回归语言建模和自回归语言建模，LLM可以分为两大类。非自回归LLM通常专注于自然语言理解，并采用“掩蔽语言建模”预训练任务，而自回归LLM则更专注于自然语言生成，经常利用“下一个标记预测”目标作为其基本任务。</p>
+<h3 id="Proposed-Taxonomy"><a href="#Proposed-Taxonomy" class="headerlink" title="Proposed Taxonomy"></a>Proposed Taxonomy</h3><p>分为三个类别：</p>
+<ol>
+<li>LLM作为Enhancer，其中LLM用于增强GNN的分类性能。</li>
+<li>LLM作为Predictor，其中LLM利用输入图结构信息来进行预测。</li>
+<li>GNN-LLM Alignment，其中LLM通过对齐技术在语义上增强GNN。</li>
+</ol>
+<p>还有一些LLM参与较少的模块，归为其他。</p>
+<h2 id="LLM-as-Enhancer"><a href="#LLM-as-Enhancer" class="headerlink" title="LLM as Enhancer"></a>LLM as Enhancer</h2><p>LLM作为增强器的方法对应于在强大的LLM的帮助下增强节点嵌入的质量。派生的嵌入被附加到图结构中，以供任何GNN使用，或直接输入到下游分类器中用于各种任务。</p>
+<p>我们自然地将这些方法分为两个分支：基于解释的和基于嵌入的，这取决于它们是否使用LLM来产生额外的文本信息。</p>
+<img lazyload src="/images/loading.svg" data-src="image-20241104170235857.png" alt="image-20241104170235857" style="zoom:50%;">
+
+<h3 id="Explanation-based-Enhancement"><a href="#Explanation-based-Enhancement" class="headerlink" title="Explanation-based Enhancement"></a>Explanation-based Enhancement</h3><p>为了丰富文本属性，基于简化的增强方法专注于利用LLM强大的zero-shot能力来捕获更高级别的信息。<br>$$<br>\begin{aligned}\text{Enhancement:}&amp;e_{i}&#x3D;f_{\mathrm{LLM}}(t_{i},p),:\mathbf{x}<em>{i}&#x3D;f</em>{\mathrm{LM}}(e_{i},t_{i}),\\text{Graph Learning:}&amp;\mathbf{H}&#x3D;f_{\mathrm{GNN}}(\mathbf{X},\mathbf{A})\end{aligned}<br>$$<br>其中ti是原始文本属性，p是设计的文本提示，ei是LLM的附加文本输出，Xi ∈ RD和X ∈ RN×D表示节点i的具有维度D和嵌入矩阵的增强的初始节点嵌入，沿着邻接矩阵A ∈ RN×N，以通过GNN获得节点表示H ∈ RN×d，其中d是表示的维度。</p>
+<p>例如，TAPE [He等人，2023]是基于解释的增强的先驱工作，它促使LLM生成解释和伪标签来增强文本属性。之后，相对较小的语言模型在原始文本数据和解释上进行微调，以将文本语义信息编码为初始节点嵌入。</p>
+<h3 id="Embedding-based-Enhancement"><a href="#Embedding-based-Enhancement" class="headerlink" title="Embedding-based Enhancement"></a>Embedding-based Enhancement</h3><p>基于嵌入的增强方法直接利用LLM来输出文本嵌入作为GNN训练的初始节点嵌入：<br>$$<br>\begin{aligned}\text{Enhancement:}&amp;\mathbf{x}<em>{i}&#x3D;f</em>{\mathrm{LLM}}(t_{i}),\\text{Graph Learning:}&amp;\mathbf{H}&#x3D;f_{\mathrm{GNN}}(\mathbf{X},\mathbf{A}).\end{aligned}<br>$$<br>这种方法需要使用嵌入可见或开源LLM，因为它需要直接访问文本嵌入并使用结构信息微调LLM。这种方法大多采用级联形式，利用结构信息辅助语言模型进行预训练或微调。通常，GALM [Xie等人，2023]在给定的大型图语料库上预训练PLM和GNN聚合器，以捕获可以最大化大规模应用程序效用的信息，然后在特定的下游应用程序上微调框架，以进一步提高性能。</p>
+<p>一些works的目的是通过将结构信息纳入LLM的微调阶段来生成节点嵌入。</p>
+<h3 id="Discussion"><a href="#Discussion" class="headerlink" title="Discussion"></a>Discussion</h3><p>LLM-as-enhancer方法在TAG上表现出上级性能，能够有效地捕获文本和结构信息。它们还表现出很强的灵活性。另一个优点（特别是基于简化的增强）是，它们为使用闭源LLM来辅助与图相关的任务铺平了道路。LLM-as-enhancer方法在处理大规模数据集时会带来显着的开销。</p>
+<h2 id="LLM-as-Predictor"><a href="#LLM-as-Predictor" class="headerlink" title="LLM as Predictor"></a>LLM as Predictor</h2><p>这一类别背后的核心思想是利用LLM在统一的生成范式中对各种与图相关的任务进行预测，例如分类和推理。然而，将LLM应用于图模态提出了独特的挑战，主要是因为图形数据通常缺乏直接转换为顺序文本，因为不同的图以不同的方式定义结构和功能。在本节中，我们将模型大致分为Flatten-based和GNN-based的预测，这取决于它们是否使用GNN来提取结构特征。</p>
+<img lazyload src="/images/loading.svg" data-src="image-20241104211514630.png" alt="image-20241104211514630" style="zoom:50%;">
+
+<h3 id="Flatten-based-Prediction"><a href="#Flatten-based-Prediction" class="headerlink" title="Flatten-based Prediction"></a>Flatten-based Prediction</h3><p>大多数利用LLM作为预测器的现有尝试采用将图扁平化为文本描述的策略，这便于LLM通过文本序列直接处理图数据。(1)利用平坦化函数Flat（·）将图结构变换成节点或标记序列Gseq，以及（2）然后应用解析函数Parse（·）从LLM生成的输出中检索预测标签：<br>$$<br>\text{Graph Flattening:}\quad G_{seq}&#x3D;\mathrm{Flat}(\mathcal{V},\mathcal{E},\mathcal{T},\mathcal{J}),\\text{Prediction:}\quad\tilde{Y}&#x3D;\mathrm{Parse}(f_{\mathrm{LLM}}(G_{seq},p)),<br>$$<br>即输入特征转化为文本描述，之后获取prediction</p>
+<h3 id="GNN-based-Prediction"><a href="#GNN-based-Prediction" class="headerlink" title="GNN-based Prediction"></a>GNN-based Prediction</h3><p>如图4（B）所示，与基于展平的预测（将图形数据转换为文本描述作为LLM的输入）相反，基于GNN的预测利用GNN的优势将图形数据中存在的固有结构特征和依赖关系与LLM结合起来，允许LLM具有结构感知性，如下所示：<br>$$<br>\begin{aligned}\text{Graph Learning:}&amp;\mathbf{H}&#x3D;f_{\mathrm{GNN}}(\mathbf{X},\mathbf{A}),\\text{Prediction:}&amp;\tilde{Y}&#x3D;\mathbb{P}\text{arse}(f_{\mathrm{LLM}}(\mathbf{H},p)),\end{aligned}<br>$$<br>其中X表示节点嵌入矩阵，A是邻接矩阵，H表示与图相关联的结构感知嵌入。基于GNN的预测还依赖于解析器来从LLM提取输出。然而，将GNN表示集成到LLM中通常需要调整，通过在训练期间提供期望的输出，使LLM的预测格式更容易标准化。</p>
+<h3 id="Discussion-1"><a href="#Discussion-1" class="headerlink" title="Discussion"></a>Discussion</h3><p>与传统的GNN相比，直接利用LLM作为预测器，在处理图的文本属性方面具有明显的优越性，尤其是具有显著的零命中性能。最终目标是开发和改进将图结构化信息编码为LLMs可以有效理解和操作的格式的方法。基于平坦化的预测可在有效性方面具有优势，而基于GNN的预测倾向于更有效。在基于平坦化的预测中，LLM的输入长度限制将每个节点的访问限制为其在几跳内的邻居，这使得捕获长范围依赖性具有挑战性。此外，如果没有GNN的参与，GNN的固有问题（如异质性）将无法解决。另一方面，对于基于GNN的预测，训练额外的GNN模块并将其插入到LLM中以进行联合训练是具有挑战性的，这是由于在深度变换器的早期层中梯度消失的问题.</p>
+<h2 id="GNN-LLM-Alignment"><a href="#GNN-LLM-Alignment" class="headerlink" title="GNN-LLM Alignment"></a>GNN-LLM Alignment</h2><p>GNN-LLM Alignment 是一种将图神经网络（GNNs）和大型语言模型（LLMs）结合起来的方法，目的是将图和文本模态对齐，使得两者能够在特定的阶段协调它们的嵌入空间。这种方法可以保留每种编码器的独特功能，同时在特定阶段对齐它们的嵌入空间。GNN-LLM Alignment 可以分为对称（Symmetric）和非对称（Asymmetric）两种方式。</p>
+<h3 id="Symmetric"><a href="#Symmetric" class="headerlink" title="Symmetric"></a>Symmetric</h3><p>对称对齐指的是在对齐过程中平等对待图和文本模态。这些方法确保两种模态的编码器在各自的应用中实现可比的性能。典型的对称对齐架构采用双塔式（two-tower）结构，使用独立的编码器分别编码图和文本。在对齐过程中，两种模态只交互一次。例如，SAFER 方法使用简单的拼接来组合这些独立的嵌入。然而，这种方法在实现结构和文本信息的无缝融合方面存在不足，导致两种模态的集成较为松散。因此，大多数双塔式模型使用对比学习技术来促进对齐，类似于 CLIP 方法对视觉和语言模态的对齐。</p>
+<p>对比学习过程通常包括两个步骤：特征提取和对比学习。特征提取步骤中，获得图表示和文本表示；对比学习步骤中，使用修改后的 InfoNCE 损失函数来更新两个编码器的参数。</p>
+<h3 id="Asymmetric"><a href="#Asymmetric" class="headerlink" title="Asymmetric"></a>Asymmetric</h3><p>非对称对齐与对称对齐不同，它侧重于让一种模态协助或增强另一种模态。当前研究中的主要方法是利用 GNNs 处理结构信息来增强 LLMs。这些研究可以分为两类：图嵌套的 Transformer（graph-nested transformer）和图感知蒸馏（graph-aware distillation）。图嵌套的 Transformer 通过将 GNNs 集成到每个 Transformer 层中来实现非对称对齐。在每个 LLM 层中，节点嵌入从第一个 token 级别的嵌入中获得，这对应于 [CLS] token。该过程涉及收集所有相关节点的嵌入，将其应用于图 Transformer，然后将输出与输入嵌入进行拼接，传递给 LLM 的下一层。</p>
+<h2 id="Future-Direction"><a href="#Future-Direction" class="headerlink" title="Future Direction"></a>Future Direction</h2><h3 id="Dealing-with-non-TAG"><a href="#Dealing-with-non-TAG" class="headerlink" title="Dealing with non-TAG"></a>Dealing with non-TAG</h3><p>利用 LLMs 辅助学习文本属性图（TAG）已经展现出了优异的性能。然而，在现实世界的场景中，图结构数据无处不在，很多数据缺乏丰富的文本信息。探索如何利用 LLMs 的强大泛化能力来帮助构建图基础模型是一个有价值的研究方向。</p>
+<h3 id="Dealing-with-data-leakage"><a href="#Dealing-with-data-leakage" class="headerlink" title="Dealing with data leakage"></a>Dealing with data leakage</h3><p>在图域中，可转移性一直是一个挑战性问题。由于图的大小、连通性、节点类型、边类型和整体拓扑结构的差异，使得从一个数据集到另一个数据集，或从一个领域到另一个领域的知识转移并不直接。尽管 LLMs 在语言任务中表现出了有希望的零&#x2F;少样本能力，但利用 LLMs 中嵌入的知识来增强图相关任务的可转移性的研究还相对有限。</p>
+<h3 id="Improving-explainability"><a href="#Improving-explainability" class="headerlink" title="Improving explainability"></a>Improving explainability</h3><p>LLMs 在处理图相关任务时表现出了比 GNNs 更好的可解释性，主要归功于 LLMs 生成用户友好的解释的能力，包括作为增强器的额外解释和作为预测器的推理过程。</p>
+<h3 id="Improving-efficiency"><a href="#Improving-efficiency" class="headerlink" title="Improving efficiency"></a>Improving efficiency</h3><p>尽管 LLMs 在图学习中表现出了有效性，但在时间和空间效率方面可能面临挑战，特别是与专门处理图结构的图学习模型（如 GNNs）相比。例如，当通过 API（如 ChatGPT 和 GPT-4）访问 LLMs 时，计费模式对处理大规模图会产生高昂的成本。</p>
+<h3 id="Analysis-and-improvement-of-expressive-ability"><a href="#Analysis-and-improvement-of-expressive-ability" class="headerlink" title="Analysis and improvement of expressive ability"></a>Analysis and improvement of expressive ability</h3><p>LLMs 在图相关任务中的理论表达能力在很大程度上尚未探索。探索如何赋予 LLMs 这一属性也是一个有趣的方向。</p>
+<h3 id="LLMs-as-agents"><a href="#LLMs-as-agents" class="headerlink" title="LLMs as agents"></a>LLMs as agents</h3><p>在当前的图与 LLMs 的集成中，LLMs 通常扮演增强器、预测器和对齐组件的角色。然而，在更复杂的场景中，这些应用可能无法完全释放 LLMs 的潜力。将 LLMs 视为代理，可能有助于构建一个强大且高度泛化的图相关任务求解器。</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> 论文阅读——A Survey of Graph Meets Large Language Model: Progress and Future Directions</li>
+        <li><strong>Author:</strong> 孙睿睿</li>
+        <li><strong>Created at
+                :</strong> 2024-11-04 15:09:11</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-11-08 22:34:29
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://redefine.ohevan.com/2024/11/04/论文阅读——A-Survey-of-Graph-Meets-Large-Language-Model-Progress-and-Future-Directions/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/LLM/">#LLM</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/Dynamic-Graph/">#Dynamic Graph</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/11/07/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E2%80%94%E2%80%94LLM-enhanced-Cascaded-Multi-level-Learning-on-Temporal-Heterogeneous-Graphs/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">论文阅读——LLM-enhanced Cascaded Multi-level Learning on Temporal Heterogeneous Graphs</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/10/22/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E2%80%94%E2%80%94DYREP-LEARNING-REPRESENTATIONS-OVER%20DYNAMIC%20GRAPHS/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">论文阅读——DYREP: LEARNING REPRESENTATIONS OVER DYNAMIC GRAPHS</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          recaptchaV3Key: "wasd",
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">论文阅读——A Survey of Graph Meets Large Language Model: Progress and Future Directions</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#A-Survey-of-Graph-Meets-Large-Language-Model-Progress-and-Future-Directions"><span class="nav-text">A Survey of Graph Meets Large Language Model: Progress and Future Directions</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-text">Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LLMs-help-graph-related-tasks"><span class="nav-text">LLMs help graph-related tasks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Contribution"><span class="nav-text">Contribution</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Preliminary"><span class="nav-text">Preliminary</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="nav-text">图神经网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E9%A2%84%E8%AE%AD%E7%BB%83%E5%92%8Cprompting"><span class="nav-text">图预训练和prompting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Large-Language-Models"><span class="nav-text">Large Language Models</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Proposed-Taxonomy"><span class="nav-text">Proposed Taxonomy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LLM-as-Enhancer"><span class="nav-text">LLM as Enhancer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Explanation-based-Enhancement"><span class="nav-text">Explanation-based Enhancement</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Embedding-based-Enhancement"><span class="nav-text">Embedding-based Enhancement</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Discussion"><span class="nav-text">Discussion</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LLM-as-Predictor"><span class="nav-text">LLM as Predictor</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Flatten-based-Prediction"><span class="nav-text">Flatten-based Prediction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GNN-based-Prediction"><span class="nav-text">GNN-based Prediction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Discussion-1"><span class="nav-text">Discussion</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GNN-LLM-Alignment"><span class="nav-text">GNN-LLM Alignment</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Symmetric"><span class="nav-text">Symmetric</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Asymmetric"><span class="nav-text">Asymmetric</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Future-Direction"><span class="nav-text">Future Direction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dealing-with-non-TAG"><span class="nav-text">Dealing with non-TAG</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dealing-with-data-leakage"><span class="nav-text">Dealing with data leakage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Improving-explainability"><span class="nav-text">Improving explainability</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Improving-efficiency"><span class="nav-text">Improving efficiency</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Analysis-and-improvement-of-expressive-ability"><span class="nav-text">Analysis and improvement of expressive ability</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LLMs-as-agents"><span class="nav-text">LLMs as agents</span></a></li></ol></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">孙睿睿</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        45 posts in total
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.1</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
